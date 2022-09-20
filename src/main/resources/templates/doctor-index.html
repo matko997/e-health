@@ -1,0 +1,39 @@
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div layout:fragment="content" class="bg-light mt-5">
+    <div class="row" th:switch="${doctors}">
+        <div class="col-md">
+            <div class="table-responsive-md">
+                <table class="table rounded rounded-3 overflow-hidden">
+                    <thead>
+                    <tr>
+                        <th scope="col">Ime</th>
+                        <th scope="col">Prezime</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Grad</th>
+                        <th scope="col">Opcije</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="doctor : ${doctors}">
+                        <td th:text="${doctor.firstName}"></td>
+                        <td th:text="${doctor.lastName}"></td>
+                        <td th:text="${doctor.email}"></td>
+                        <td th:text="${doctor.city}"></td>
+                        <td>
+                            <a class="btn btn-success" style="font-size: 12px;"><i class="fa-solid fa-user"></i></a>
+                            <a class="btn btn-primary" style="font-size: 12px"><i class="fas fa-user-edit"></i></a>
+                            <a class="btn btn-danger" style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

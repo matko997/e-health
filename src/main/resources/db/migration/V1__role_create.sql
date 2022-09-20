@@ -1,0 +1,6 @@
+CREATE TABLE role
+(
+    id         INTEGER AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(128) NOT NULL,
+    created_at DATETIME
+) ENGINE = INNODB;

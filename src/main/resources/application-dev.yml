@@ -1,0 +1,33 @@
+spring:
+  # Templates reloading during development
+  thymeleaf:
+    prefix: file:src/main/resources/templates/
+    cache: false
+
+  # Static resources reloading during development
+  web:
+    resources:
+      static-locations: file:src/main/resources/static
+      cache:
+        period: 0
+
+  # ===============================
+  # = DATA SOURCE
+  # ===============================
+
+  datasource:
+    url: jdbc:mariadb://localhost:33061/e_zdravlje?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  flyway:
+    user: root
+    password: root
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+

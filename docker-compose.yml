@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      MYSQL_DATABASE: e_zdravlje
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "33061:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - "8081:80"
+volumes:
+  dbdata:

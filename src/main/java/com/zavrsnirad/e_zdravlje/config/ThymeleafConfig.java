@@ -1,4 +1,4 @@
-package com.zavrsnirad.digitalhealth.config;
+package com.zavrsnirad.e_zdravlje.config;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy;

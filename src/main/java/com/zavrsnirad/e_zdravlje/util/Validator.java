@@ -1,6 +1,6 @@
-package com.zavrsnirad.digitalhealth.util;
+package com.zavrsnirad.e_zdravlje.util;
 
-import com.zavrsnirad.digitalhealth.model.User;
+import com.zavrsnirad.e_zdravlje.model.User;
 
 import java.util.Optional;
 import java.util.regex.Matcher;

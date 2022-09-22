@@ -1,6 +1,6 @@
-package com.zavrsnirad.digitalhealth.security;
+package com.zavrsnirad.e_zdravlje.security;
 
-import com.zavrsnirad.digitalhealth.service.CustomUserDetailsService;
+import com.zavrsnirad.e_zdravlje.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

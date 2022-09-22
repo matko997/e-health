@@ -1,4 +1,4 @@
-package com.zavrsnirad.digitalhealth.model;
+package com.zavrsnirad.e_zdravlje.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

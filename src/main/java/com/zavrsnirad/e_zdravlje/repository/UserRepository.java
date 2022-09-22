@@ -1,6 +1,6 @@
-package com.zavrsnirad.digitalhealth.repository;
+package com.zavrsnirad.e_zdravlje.repository;
 
-import com.zavrsnirad.digitalhealth.model.User;
+import com.zavrsnirad.e_zdravlje.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

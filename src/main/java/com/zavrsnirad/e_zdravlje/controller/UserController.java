@@ -1,9 +1,9 @@
-package com.zavrsnirad.digitalhealth.controller;
+package com.zavrsnirad.e_zdravlje.controller;
 
-import com.zavrsnirad.digitalhealth.dto.UserProfileDto;
-import com.zavrsnirad.digitalhealth.model.User;
-import com.zavrsnirad.digitalhealth.service.UserService;
-import com.zavrsnirad.digitalhealth.util.Validator;
+import com.zavrsnirad.e_zdravlje.dto.UserProfileDto;
+import com.zavrsnirad.e_zdravlje.model.User;
+import com.zavrsnirad.e_zdravlje.service.UserService;
+import com.zavrsnirad.e_zdravlje.util.Validator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

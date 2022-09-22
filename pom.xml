@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.zavrsni-rad</groupId>
-    <artifactId>digital-health</artifactId>
+    <artifactId>e_zdravlje</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>digital-health</name>
+    <name>e zdravlje</name>
     <description>Završni rad - računarstvo</description>
     <properties>
         <java.version>17</java.version>

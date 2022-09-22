@@ -1,7 +1,7 @@
-package com.zavrsnirad.digitalhealth.controller;
+package com.zavrsnirad.e_zdravlje.controller;
 
-import com.zavrsnirad.digitalhealth.dto.UserRegisterDto;
-import com.zavrsnirad.digitalhealth.service.UserService;
+import com.zavrsnirad.e_zdravlje.dto.UserRegisterDto;
+import com.zavrsnirad.e_zdravlje.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

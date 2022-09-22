@@ -1,4 +1,4 @@
-package com.zavrsnirad.digitalhealth;
+package com.zavrsnirad.e_zdravlje;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.zavrsnirad.digitalhealth.dto;
+package com.zavrsnirad.e_zdravlje.dto;
 
 import lombok.*;
 

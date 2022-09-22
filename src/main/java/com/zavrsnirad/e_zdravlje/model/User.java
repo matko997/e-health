@@ -1,6 +1,6 @@
-package com.zavrsnirad.digitalhealth.model;
+package com.zavrsnirad.e_zdravlje.model;
 
-import com.zavrsnirad.digitalhealth.model.enumeration.Gender;
+import com.zavrsnirad.e_zdravlje.model.enumeration.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,9 +1,9 @@
-package com.zavrsnirad.digitalhealth.controller;
+package com.zavrsnirad.e_zdravlje.controller;
 
-import com.zavrsnirad.digitalhealth.dto.UserRegisterDto;
-import com.zavrsnirad.digitalhealth.model.User;
-import com.zavrsnirad.digitalhealth.service.UserService;
-import com.zavrsnirad.digitalhealth.util.Validator;
+import com.zavrsnirad.e_zdravlje.dto.UserRegisterDto;
+import com.zavrsnirad.e_zdravlje.model.User;
+import com.zavrsnirad.e_zdravlje.service.UserService;
+import com.zavrsnirad.e_zdravlje.util.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

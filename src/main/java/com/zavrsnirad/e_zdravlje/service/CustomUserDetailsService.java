@@ -1,7 +1,7 @@
-package com.zavrsnirad.digitalhealth.service;
+package com.zavrsnirad.e_zdravlje.service;
 
-import com.zavrsnirad.digitalhealth.model.User;
-import com.zavrsnirad.digitalhealth.repository.UserRepository;
+import com.zavrsnirad.e_zdravlje.model.User;
+import com.zavrsnirad.e_zdravlje.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

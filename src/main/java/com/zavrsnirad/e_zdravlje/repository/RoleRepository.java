@@ -1,6 +1,6 @@
-package com.zavrsnirad.digitalhealth.repository;
+package com.zavrsnirad.e_zdravlje.repository;
 
-import com.zavrsnirad.digitalhealth.model.Role;
+import com.zavrsnirad.e_zdravlje.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

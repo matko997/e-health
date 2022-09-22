@@ -1,12 +1,12 @@
-package com.zavrsnirad.digitalhealth.service;
+package com.zavrsnirad.e_zdravlje.service;
 
-import com.zavrsnirad.digitalhealth.dto.UserProfileDto;
-import com.zavrsnirad.digitalhealth.dto.UserRegisterDto;
-import com.zavrsnirad.digitalhealth.model.Role;
-import com.zavrsnirad.digitalhealth.model.User;
-import com.zavrsnirad.digitalhealth.model.enumeration.Gender;
-import com.zavrsnirad.digitalhealth.repository.RoleRepository;
-import com.zavrsnirad.digitalhealth.repository.UserRepository;
+import com.zavrsnirad.e_zdravlje.dto.UserProfileDto;
+import com.zavrsnirad.e_zdravlje.dto.UserRegisterDto;
+import com.zavrsnirad.e_zdravlje.model.Role;
+import com.zavrsnirad.e_zdravlje.model.User;
+import com.zavrsnirad.e_zdravlje.model.enumeration.Gender;
+import com.zavrsnirad.e_zdravlje.repository.RoleRepository;
+import com.zavrsnirad.e_zdravlje.repository.UserRepository;
 import javassist.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

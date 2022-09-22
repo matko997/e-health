@@ -1,4 +1,4 @@
-package com.zavrsnirad.digitalhealth.security;
+package com.zavrsnirad.e_zdravlje.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;

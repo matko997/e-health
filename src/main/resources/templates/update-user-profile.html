@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout.html}" lang="en"
-      xmlns:th="http://thymeleaf.org">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <link rel="stylesheet" href="/user-profile.css">
     <style>
@@ -19,8 +21,8 @@
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
                             class="rounded-circle mt-5" width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
-                            class="font-weight-bold" th:text=*{email}></span><span
-                            class="text-black-50" th:text=*{birthDay}></span>
+                            class="font-weight-bold" th:text="*{email}"></span><span
+                            class="text-black-50" th:text="*{birthDay}"></span>
                         <span class="font-weight-bold"></span>
                     </div>
                 </div>
@@ -83,14 +85,16 @@
 
                             </div>
 
-                            <div class="col-md-6"><label class="labels">JMBG</label><input type="text"
-                                                                                           class="form-control"
-                                                                                           placeholder="JMBG"
-                                                                                           th:field="*{jmbg}"/>
+                            <div sec:authorize="hasAuthority('PATIENT')" class="col-md-6"><label
+                                    class="labels">JMBG</label><input type="text"
+                                                                      class="form-control"
+                                                                      placeholder="JMBG"
+                                                                      th:field="*{jmbg}"/>
                                 <span th:if="${#fields.hasErrors('jmbg')}" th:errors="*{jmbg}" class="error-msg"></span>
-
                             </div>
-                            <div class="col-md-2"><label class="labels">Krvna grupa</label>
+
+                            <div sec:authorize="hasAuthority('PATIENT')" class="col-md-2"><label class="labels">Krvna
+                                grupa</label>
                                 <select th:field="*{bloodType}" class="form-select" id="dropDownList">
                                     <option th:value="'A'" th:text="'A'"></option>
                                     <option th:value="'B'" th:text="'B'"></option>
@@ -98,62 +102,62 @@
                                     <option th:value="'0'" th:text="'0'"></option>
                                 </select>
                             </div>
-                        </div>
 
+                            <div sec:authorize="hasAuthority('DOCTOR')">
+                                <hr class="mt-5 mb-5">
+                                <div class="row mt-2">
+                                    <div class="col-md-6"><label class="labels">Sveučilište</label><input type="text"
+                                                                                                          class="form-control"
+                                                                                                          placeholder="Diplomirao na sveučilištu"
+                                                                                                          th:field="*{graduationUniversity}"/>
+                                        <span th:if="${#fields.hasErrors('graduationUniversity')}"
+                                              th:errors="*{graduationUniversity}"
+                                              class="error-msg"></span>
 
-                        <hr class="mt-5 mb-5">
-                        <div class="row mt-2">
-                            <div class="col-md-6"><label class="labels">Sveučilište</label><input type="text"
-                                                                                                  class="form-control"
-                                                                                                  placeholder="Diplomirao na sveučilištu"
-                                                                                                  th:field="*{graduationUniversity}"/>
-                                <span th:if="${#fields.hasErrors('graduationUniversity')}"
-                                      th:errors="*{graduationUniversity}"
-                                      class="error-msg"></span>
+                                    </div>
 
+                                    <div class="col-md-6"><label class="labels">Godina završetka studija</label><input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Godina završetka studija"
+                                            th:field="*{graduationYear}"/>
+                                        <span th:if="${#fields.hasErrors('graduationYear')}"
+                                              th:errors="*{graduationYear}"
+                                              class="error-msg"></span>
+
+                                    </div>
+
+                                    <div class="col-md-6"><label class="labels">Specijalizacija</label><input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Završena specijalizacija"
+                                            th:field="*{specialization}"/>
+                                        <span th:if="${#fields.hasErrors('specialization')}"
+                                              th:errors="*{specialization}"
+                                              class="error-msg"></span>
+
+                                    </div>
+
+                                    <div class="col-md-6"><label class="labels">Godina završetka
+                                        specijalizacije</label><input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Godina završetka specijalizacije"
+                                            th:field="*{specializationYear}"/>
+                                        <span th:if="${#fields.hasErrors('specializationYear')}"
+                                              th:errors="*{specializationYear}"
+                                              class="error-msg"></span>
+
+                                    </div>
+
+                                </div>
                             </div>
-
-                            <div class="col-md-6"><label class="labels">Godina završetka studija</label><input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Godina završetka studija"
-                                    th:field="*{graduationDate}"/>
-                                <span th:if="${#fields.hasErrors('graduationDate')}"
-                                      th:errors="*{graduationDate}"
-                                      class="error-msg"></span>
-
+                            <div class="mt-5 text-center">
+                                <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
                             </div>
-
-                            <div class="col-md-6"><label class="labels">Specijalizacija</label><input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Završena specijalizacija"
-                                    th:field="*{specialization}"/>
-                                <span th:if="${#fields.hasErrors('specialization')}"
-                                      th:errors="*{specialization}"
-                                      class="error-msg"></span>
-
-                            </div>
-
-                            <div class="col-md-6"><label class="labels">Godina završetka specijalizacije</label><input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Godina završetka specijalizacije"
-                                    th:field="*{specializationDate}"/>
-                                <span th:if="${#fields.hasErrors('specializationDate')}"
-                                      th:errors="*{specializationDate}"
-                                      class="error-msg"></span>
-
-                            </div>
-
-                        </div>
-                        <div class="mt-5 text-center">
-                            <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </form>
     </div>

@@ -3,7 +3,7 @@ package com.zavrsnirad.digitalhealth.controller;
 import com.zavrsnirad.digitalhealth.dto.UserRegisterDto;
 import com.zavrsnirad.digitalhealth.model.User;
 import com.zavrsnirad.digitalhealth.service.UserService;
-import com.zavrsnirad.digitalhealth.util.EmailValidator;
+import com.zavrsnirad.digitalhealth.util.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +27,11 @@ public class AuthController {
 
         Optional<User> existingUser = userService.findByEmail(userRegisterDto.getEmail());
 
-        if (EmailValidator.isInUse(existingUser)) {
+        if (Validator.isInUse(existingUser)) {
             bindingResult.rejectValue("email",
                     "email.taken");
         }
-        if (!EmailValidator.validEmail(userRegisterDto.getEmail())) {
+        if (!Validator.validEmail(userRegisterDto.getEmail())) {
             bindingResult.rejectValue("email",
                     "email.invalid");
         }

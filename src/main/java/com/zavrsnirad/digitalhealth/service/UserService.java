@@ -11,7 +11,6 @@ import javassist.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,9 +53,9 @@ public class UserService {
         user.setPostalCode(userProfileDto.getPostalCode());
         user.setBloodType(userProfileDto.getBloodType());
         user.setGraduationUniversity(userProfileDto.getGraduationUniversity());
-        user.setGraduationDate(userProfileDto.getGraduationDate());
+        user.setGraduationYear(userProfileDto.getGraduationYear());
         user.setSpecialization(userProfileDto.getSpecialization());
-        user.setSpecializationDate(userProfileDto.getSpecializationDate());
+        user.setSpecializationYear(userProfileDto.getSpecializationYear());
         userRepository.save(user);
     }
 
@@ -67,12 +66,13 @@ public class UserService {
         if (userRegisterDto.getGender().equalsIgnoreCase("male")) {
             gender = Gender.M;
         } else {
-            gender = Gender.F;
+            gender = Gender.Z;
         }
 
         user.setFirstName(userRegisterDto.getFirstName());
         user.setLastName(userRegisterDto.getLastName());
         user.setEmail(userRegisterDto.getEmail());
+        user.setBirthDay(userRegisterDto.getBirthDay());
         user.setGender(gender);
 //        encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
@@ -92,20 +92,20 @@ public class UserService {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .jmbg(Objects.isNull(user.getJmbg()) ? "" : user.getJmbg())
-                .birthDay(Objects.isNull(user.getBirthDay()) ? LocalDate.of(1997, 4, 29) : user.getBirthDay())
+                .birthDay(user.getBirthDay())
                 .city(Objects.isNull(user.getCity()) ? "" : user.getCity())
                 .bloodType(Objects.isNull(user.getBloodType()) ? "" : user.getBloodType())
                 .address(Objects.isNull(user.getAddress()) ? "" : user.getAddress())
                 .postalCode(Objects.isNull(user.getPostalCode()) ? "" : user.getPostalCode())
                 .phoneNumber(Objects.isNull(user.getPhoneNumber()) ? "" : user.getPhoneNumber())
                 .graduationUniversity(Objects.isNull(user.getGraduationUniversity()) ? "" : user.getGraduationUniversity())
-                .graduationDate(Objects.isNull(user.getGraduationDate()) ? LocalDate.of(2022, 5, 1) : user.getGraduationDate())
-                .specialization(Objects.isNull(user.getSpecialization()) ? "" : user.getSpecialization())
-                .specializationDate(Objects.isNull(user.getSpecializationDate()) ? LocalDate.of(2022, 5, 1) : user.getSpecializationDate())
+                .graduationYear(user.getGraduationYear())
+                .specialization(user.getSpecialization())
+                .specializationYear(user.getSpecializationYear())
                 .build();
     }
 
-    public List<User> findAllDoctors(){
+    public List<User> findAllDoctors() {
         return userRepository.findAllByRole("DOCTOR");
     }
 

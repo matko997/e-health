@@ -3,6 +3,7 @@ package com.zavrsnirad.digitalhealth.controller;
 import com.zavrsnirad.digitalhealth.dto.UserProfileDto;
 import com.zavrsnirad.digitalhealth.model.User;
 import com.zavrsnirad.digitalhealth.service.UserService;
+import com.zavrsnirad.digitalhealth.util.Validator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -43,6 +45,11 @@ public class UserController {
 
     @PostMapping(value = "/racun")
     public String updateUserProfile(@Valid @ModelAttribute("user") UserProfileDto userProfileDto, BindingResult bindingResult) {
+
+        if (Objects.nonNull(userProfileDto.getJmbg()) && !userProfileDto.getJmbg().equals("") && Validator.isInvalidJmbg(userProfileDto.getJmbg())) {
+            bindingResult.rejectValue("jmbg",
+                    "jmbg.invalid");
+        }
 
         if (bindingResult.hasErrors()) {
             return "update-user-profile";

@@ -44,12 +44,12 @@ public class User {
     private String phoneNumber;
     @Column(name = "graduation_university")
     private String graduationUniversity;
-    @Column(name = "graduation_date")
-    private LocalDate graduationDate;
+    @Column(name = "graduation_year")
+    private Integer graduationYear;
     @Column(name = "specialization")
     private String specialization;
-    @Column(name = "specialization_date")
-    private LocalDate specializationDate;
+    @Column(name = "specialization_year")
+    private Integer specializationYear;
     @CreationTimestamp
     private LocalDateTime createdAt;
 

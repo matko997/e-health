@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://thymeleaf.org" lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <meta charset="UTF-8">
 <meta name="viewport"
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -46,7 +47,8 @@
                     <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bok Matko</a>
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bok <span
+                                    sec:authentication="name"></span></a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" th:href="@{/racun}">Moj profil</a>
                                 <a class="dropdown-item" href="#!">Postavke</a>
@@ -62,23 +64,8 @@
         </nav>
 
         <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-4 ">
-                    <div class="input-group">
-                        <label for="example-search-input"></label><input
-                            class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
-                            id="example-search-input">
-                        <span class="input-group-append">
-                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
-                                        type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                    </div>
-                </div>
-            </div>
-            <div layout:fragment="content" class="vh-100">
-
+            <div
+                    layout:fragment="content" class="vh-100">
             </div>
         </div>
     </div>

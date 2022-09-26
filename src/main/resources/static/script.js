@@ -15,3 +15,14 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+setTimeout(function () {
+    $('.alert').remove();
+}, 3000);
+
+// $('document').ready(function (){
+//     $('.edit-user').on('click',function (event){
+//         event.preventDefault();
+//         $('#editModal').show();
+//     });
+// });

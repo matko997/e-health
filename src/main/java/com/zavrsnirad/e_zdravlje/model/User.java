@@ -1,5 +1,7 @@
 package com.zavrsnirad.e_zdravlje.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.zavrsnirad.e_zdravlje.model.enumeration.Gender;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,8 +32,7 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDay;
     @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private String gender;
     @Column(name = "jmbg")
     private String jmbg;
     @Column(name = "city")
@@ -52,7 +53,7 @@ public class User {
     private Integer specializationYear;
     @CreationTimestamp
     private LocalDateTime createdAt;
-
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "role_id")
     private Role role;

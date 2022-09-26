@@ -18,9 +18,9 @@ public final class Validator {
     }
 
 
-    public static boolean validEmail(String email) {
+    public static boolean isInvalidEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
+        return !matcher.find();
     }
 
     public static boolean isInUse(Optional<User> user) {
@@ -28,6 +28,10 @@ public final class Validator {
     }
 
     public static boolean isInvalidJmbg(String jmbg) {
-        return jmbg.length()!=13 || !isAlphaNumeric(jmbg);
+        return jmbg.length() != 13 || !isAlphaNumeric(jmbg);
+    }
+
+    public static boolean isInvalidPassword(String password) {
+        return password.length() < 8;
     }
 }

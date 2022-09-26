@@ -4,10 +4,8 @@ import com.zavrsnirad.e_zdravlje.dto.UserProfileDto;
 import com.zavrsnirad.e_zdravlje.dto.UserRegisterDto;
 import com.zavrsnirad.e_zdravlje.model.Role;
 import com.zavrsnirad.e_zdravlje.model.User;
-import com.zavrsnirad.e_zdravlje.model.enumeration.Gender;
 import com.zavrsnirad.e_zdravlje.repository.RoleRepository;
 import com.zavrsnirad.e_zdravlje.repository.UserRepository;
-import javassist.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +29,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(long id) throws NotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
+    public Optional<User> findById(long id) {
+        return userRepository.findById(id);
     }
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public void save(User user) {
+    public void registerNewDoctor(User user) {
+        Optional<Role> doctorRole = roleRepository.findByName("DOCTOR");
+        doctorRole.ifPresent(user::setRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -59,21 +60,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void registerNewUser(UserRegisterDto userRegisterDto) {
-
+    public void registerNewPatient(UserRegisterDto userRegisterDto) {
         User user = new User();
-        Gender gender;
-        if (userRegisterDto.getGender().equalsIgnoreCase("male")) {
-            gender = Gender.M;
-        } else {
-            gender = Gender.Z;
-        }
 
         user.setFirstName(userRegisterDto.getFirstName());
         user.setLastName(userRegisterDto.getLastName());
         user.setEmail(userRegisterDto.getEmail());
         user.setBirthDay(userRegisterDto.getBirthDay());
-        user.setGender(gender);
+        user.setGender(userRegisterDto.getGender());
 //        encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
 

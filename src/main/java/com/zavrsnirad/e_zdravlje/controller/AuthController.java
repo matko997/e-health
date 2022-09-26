@@ -31,7 +31,7 @@ public class AuthController {
             bindingResult.rejectValue("email",
                     "email.taken");
         }
-        if (!Validator.validEmail(userRegisterDto.getEmail())) {
+        if (Validator.isInvalidEmail(userRegisterDto.getEmail())) {
             bindingResult.rejectValue("email",
                     "email.invalid");
         }
@@ -44,7 +44,7 @@ public class AuthController {
             return "register";
         }
 
-        userService.registerNewUser(userRegisterDto);
+        userService.registerNewPatient(userRegisterDto);
         return "redirect:/naslovnica";
     }
 

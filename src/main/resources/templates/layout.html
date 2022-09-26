@@ -57,6 +57,15 @@
 
             $('#editModal').modal('show');
         });
+
+        $('.delete-user').on('click',function (event){
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+            $('#deleteModal #delHref').attr('href',href);
+            $('#deleteModal').modal('show');
+
+        })
     });
 </script>
 <title>Dashboard</title>

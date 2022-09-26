@@ -83,4 +83,17 @@ public class DoctorController {
         redirectAttributes.addFlashAttribute("success", "Doktor uspješno ažuriran");
         return "redirect:/doktori";
     }
+
+    @RequestMapping(value = "/doktor/obrisi", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteDoctor(long id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Doktor uspješno obrisan.");
+            return "redirect:/doktori";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/doktori";
+        }
+    }
 }

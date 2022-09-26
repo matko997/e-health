@@ -103,4 +103,25 @@ public class UserService {
         return userRepository.findAllByRole("DOCTOR");
     }
 
+    public void editUser(User user) {
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        User doctor = optionalUser.get();
+
+        doctor.setFirstName(user.getFirstName());
+        doctor.setLastName(user.getLastName());
+        doctor.setSpecialization(user.getSpecialization());
+        doctor.setSpecializationYear(user.getSpecializationYear());
+        doctor.setGraduationUniversity(user.getGraduationUniversity());
+        doctor.setGraduationYear(user.getGraduationYear());
+
+        if(Objects.nonNull(user.getGender())){
+            doctor.setGender(user.getGender());
+        }
+        if(Objects.nonNull(user.getEmail())){
+            doctor.setEmail(user.getEmail());
+        }
+
+        userRepository.save(doctor);
+    }
+
 }

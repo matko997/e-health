@@ -42,10 +42,13 @@
 
             const href = $(this).attr('href');
 
-            $.get(href, function (doctor, status) {
+            $.get(href, function (doctor) {
+                $('#idEdit').val(doctor.id);
                 $('#firstNameEdit').val(doctor.firstName);
                 $('#lastNameEdit').val(doctor.lastName);
-                $('#emailEdit').val(doctor.email);
+                $('#cityEdit').val(doctor.city);
+                $('#addressEdit').val(doctor.address);
+                $('#phoneNumberEdit').val(doctor.phoneNumber);
                 $('#specializationEdit').val(doctor.specialization);
                 $('#specializationYearEdit').val(doctor.specializationYear);
                 $('#graduatedAtEdit').val(doctor.graduationUniversity);
@@ -94,7 +97,6 @@
                                     sec:authentication="name"></span></a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" th:href="@{/racun}">Moj profil</a>
-                                <a class="dropdown-item" href="#!">Postavke</a>
                                 <div class="dropdown-divider"></div>
                                 <form name="logoutForm" th:action="@{/odjava}" method="post">
                                     <button class="dropdown-item" type="submit">Odjavi se</button>
@@ -117,6 +119,12 @@
                         <div class="modal-body">
 
                             <div class="mb-3 form-group">
+                                <input placeholder="id" type="text" class="form-control" id="idEdit"
+                                       name="id"
+                                       hidden>
+                            </div>
+
+                            <div class="mb-3 form-group">
                                 <label for="firstNameEdit" class="col-form-label">Ime:</label>
                                 <input placeholder="ime" type="text" class="form-control" id="firstNameEdit"
                                        name="firstName"
@@ -129,25 +137,40 @@
                                        name="lastName"
                                        required>
                             </div>
+
                             <div class="mb-3 form-group">
-                                <label for="emailEdit" class="col-form-label">Email:</label>
-                                <input placeholder="email" type="text" class="form-control" id="emailEdit"
-                                       name="email"
-                                       required>
+                                <label for="cityEdit" class="col-form-label">Grad:</label>
+                                <input placeholder="prezime" type="text" class="form-control" id="cityEdit"
+                                       name="city"
+                                       >
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label for="addressEdit" class="col-form-label">Adresa:</label>
+                                <input placeholder="prezime" type="text" class="form-control" id="addressEdit"
+                                       name="address"
+                                       >
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label for="phoneNumberEdit" class="col-form-label">Broj telefona:</label>
+                                <input placeholder="prezime" type="text" class="form-control" id="phoneNumberEdit"
+                                       name="phoneNumber"
+                                       >
                             </div>
 
                             <div class="mb-3 form-group">
                                 <label for="graduatedAtEdit" class="col-form-label">Diplomirao:</label>
                                 <input placeholder="sveučilište" type="text" class="form-control" id="graduatedAtEdit"
-                                       name="graduationUniversity" required>
+                                       name="graduationUniversity">
                             </div>
 
                             <div class="mb-3 form-group">
                                 <label for="graduationYearEdit" class="col-form-label">Godina:</label>
-                                <input placeholder="godina završetka studija" type="number" min="1950" max="2099"
+                                <input placeholder="godina završetka studija" type="number" min="1950" max="2022"
                                        step="1"
                                        value="2016" class="form-control"
-                                       id="graduationYearEdit" name="graduationYear" required>
+                                       id="graduationYearEdit" name="graduationYear">
                             </div>
 
                             <div class="mb-3 form-group">
@@ -161,7 +184,7 @@
                                     specijalizacije:</label>
                                 <input placeholder="Specijalizirao godine...Polje nije obavezno" type="number"
                                        min="1950"
-                                       max="2099" step="1" value="2016"
+                                       max="2022" step="1" value="2016"
                                        class="form-control"
                                        id="specializationYearEdit" name="specializationYear">
                             </div>

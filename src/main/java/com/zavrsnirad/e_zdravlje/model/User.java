@@ -1,8 +1,6 @@
 package com.zavrsnirad.e_zdravlje.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.zavrsnirad.e_zdravlje.model.enumeration.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

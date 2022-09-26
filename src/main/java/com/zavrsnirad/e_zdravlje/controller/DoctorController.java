@@ -4,7 +4,6 @@ import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.repository.UserRepository;
 import com.zavrsnirad.e_zdravlje.service.UserService;
 import com.zavrsnirad.e_zdravlje.util.Validator;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -75,8 +74,8 @@ public class DoctorController {
 
     @RequestMapping(value = "/doktori/uredi", method = {RequestMethod.GET, RequestMethod.PUT})
     public String updateDoctor(User user) {
-        userRepository.save(user);
 
+        userService.editUser(user);
         return "redirect:/doktori";
     }
 }

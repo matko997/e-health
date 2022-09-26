@@ -73,9 +73,14 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/doktori/uredi", method = {RequestMethod.GET, RequestMethod.PUT})
-    public String updateDoctor(User user) {
+    public String updateDoctor(User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/doktori";
+        }
         userService.editUser(user);
+        redirectAttributes.addFlashAttribute("success", "Doktor uspješno ažuriran");
         return "redirect:/doktori";
     }
 }

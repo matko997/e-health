@@ -155,14 +155,14 @@
                 <nav aria-label="Page navigation" class="paging">
                     <ul class="pagination" th:if="${doctors.page.totalPages > 1}">
                         <li class="page-item" th:classappend="${!doctors.paging.isPrevEnabled()? 'disabled' : ''}">
-                            <a class="page-link" th:href="@{'/doktori?pageNumber=' + ${doctors.paging.pageNumber - 1}}"
+                            <a class="page-link" th:href="@{'/doktori?stranica=' + ${doctors.paging.pageNumber - 1}}"
                                tabindex="-1">Prethodna</a>
                         </li>
                         <th:block th:each="item : ${doctors.paging.getItems()}">
                             <li class="page-item"
                                 th:classappend="${item.index == doctors.paging.pageNumber? 'active' : ''}"
                                 th:if="${item.pageItemType.name() == 'PAGE'}">
-                                <a class="page-link" th:href="@{'/doktori?pageNumber=' + ${item.index}}"
+                                <a class="page-link" th:href="@{'/doktori?stranica=' + ${item.index}}"
                                    th:text="${item.index}"></a>
                             </li>
                             <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
@@ -170,7 +170,7 @@
                             </li>
                         </th:block>
                         <li class="page-item" th:classappend="${!doctors.paging.isNextEnabled()? 'disabled' : ''}">
-                            <a class="page-link" th:href="@{'/doktori?pageNumber=' + ${doctors.paging.pageNumber + 1}}">Sljedeća</a>
+                            <a class="page-link" th:href="@{'/doktori?stranica=' + ${doctors.paging.pageNumber + 1}}">Sljedeća</a>
                         </li>
                     </ul>
                 </nav>

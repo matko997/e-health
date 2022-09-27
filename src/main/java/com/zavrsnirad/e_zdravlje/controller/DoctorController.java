@@ -58,8 +58,8 @@ public class DoctorController {
     }
 
     @GetMapping("/doktori")
-    public String findDoctorsPaginated(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                                       @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
+    public String findDoctorsPaginated(@RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
+                                       @RequestParam(value = "velicina", required = false, defaultValue = "10") int size, Model model) {
         model.addAttribute("doctors", userService.findDoctorsPaginated(pageNumber, size));
         return "doctor-index";
     }

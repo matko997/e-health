@@ -140,6 +140,99 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="doctor-info-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detalji o doktoru</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container rounded bg-white mt-5 mb-5">
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="p-3 py-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-user"></i></span> Ime:<span
+                                                    id="showFirstName"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-user"></i></span> Prezime:<span
+                                                    id="showLastName"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-venus-mars"></i></span> Spol:<span
+                                                    id="showGender"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-calendar-days"></i></span> Datum rođenja:<span
+                                                    id="showBirthDay"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-phone"></i></span> Broj telefona:<span
+                                                    id="showPhoneNumber"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-city"></i></span> Grad:<span
+                                                    id="showCity"></span> </label>
+                                        </div>
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-address-book"></i></span> Adresa:<span
+                                                    id="showAddress"></span> </label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-envelopes-bulk"></i></span> Poštanski broj:<span
+                                                    id="showPostalCode"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-building-columns"></i></span> Sveučilište:<span
+                                                    id="showUniversity"></span> </label>
+                                        </div>
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-calendar-days"></i></span>Godina završetka studija:<span
+                                                    id="showUniversityYear"></span> </label>
+
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa fa-medkit"></i></span> Specijalizacija:<span
+                                                    id="showSpecialization"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-calendar-days"></i></span> Godina završetka specijalizacije:<span
+                                                    id="showSpecializationYear"></span> </label>
+                                        </div>
+
+
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer mt-5">
+                                        <button type="button" class="btn btn-secondary mt-4" data-bs-dismiss="modal">
+                                            Zatvori
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="row mt-5" th:switch="${doctors}">
@@ -162,11 +255,15 @@
                         <td th:text="${doctor.email}"></td>
                         <td th:text="${doctor.city}"></td>
                         <td>
-                            <a class="btn btn-success" style="font-size: 12px;"><i class="fa-solid fa-user"></i></a>
-                            <a th:href="@{/doktor(id=${doctor.id})}" class="btn btn-warning edit-user"
+                            <a th:href="@{/doktor(id=${doctor.id})}"
+                               class="btn btn-success show-user" style="font-size: 12px;"><i
+                                    class="fa-solid fa-user"></i></a>
+                            <a th:href="@{/doktor(id=${doctor.id})}"
+                               class="btn btn-warning edit-user"
                                style="font-size: 12px"><i
                                     class="fas fa-user-edit"></i></a>
-                            <a th:href="@{/doktor/obrisi(id=${doctor.id})}" class="btn btn-danger delete-user"
+                            <a th:href="@{/doktor/obrisi(id=${doctor.id})}"
+                               class="btn btn-danger delete-user"
                                style="font-size: 12px"><i class="fas fa-user-times"></i></a>
                         </td>
                     </tr>
@@ -174,28 +271,36 @@
                 </table>
                 <nav aria-label="Page navigation" class="paging">
                     <ul class="pagination" th:if="${doctors.page.totalPages > 1}">
-                        <li class="page-item" th:classappend="${!doctors.paging.isPrevEnabled()? 'disabled' : ''}">
-                            <a class="page-link" th:href="@{'/doktori?stranica=' + ${doctors.paging.pageNumber - 1}}"
+                        <li class="page-item"
+                            th:classappend="${!doctors.paging.isPrevEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/doktori?stranica=' + ${doctors.paging.pageNumber - 1}}"
                                tabindex="-1">Prethodna</a>
                         </li>
                         <th:block th:each="item : ${doctors.paging.getItems()}">
                             <li class="page-item"
                                 th:classappend="${item.index == doctors.paging.pageNumber? 'active' : ''}"
                                 th:if="${item.pageItemType.name() == 'PAGE'}">
-                                <a class="page-link" th:href="@{'/doktori?stranica=' + ${item.index}}"
+                                <a class="page-link"
+                                   th:href="@{'/doktori?stranica=' + ${item.index}}"
                                    th:text="${item.index}"></a>
                             </li>
-                            <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                            <li class="page-item disabled"
+                                th:if="${item.pageItemType.name() == 'DOTS'}">
                                 <a class="page-link" href="#">...</a>
                             </li>
                         </th:block>
-                        <li class="page-item" th:classappend="${!doctors.paging.isNextEnabled()? 'disabled' : ''}">
-                            <a class="page-link" th:href="@{'/doktori?stranica=' + ${doctors.paging.pageNumber + 1}}">Sljedeća</a>
+                        <li class="page-item"
+                            th:classappend="${!doctors.paging.isNextEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/doktori?stranica=' + ${doctors.paging.pageNumber + 1}}">Sljedeća</a>
                         </li>
                     </ul>
                 </nav>
-                <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-                <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+                <div class="alert alert-primary" role="alert" th:text="${success}"
+                     th:if="${success}"></div>
+                <div class="alert alert-danger" role="alert" th:text="${error}"
+                     th:if="${error}"></div>
             </div>
         </div>
     </div>

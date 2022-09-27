@@ -66,6 +66,31 @@
             $('#deleteModal').modal('show');
 
         })
+
+        $('.show-user').on('click',function (event){
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (doctor) {
+                // $('#showFirstName').val(doctor.id);
+                $('#showFirstName').text(doctor.firstName);
+                $('#showLastName').text(doctor.lastName);
+                $('#showCity').text(doctor.city);
+                $('#showGender').text(doctor.gender);
+                $('#showBirthDay').text(doctor.birthDay);
+                $('#showAddress').text(doctor.address);
+                $('#showPhoneNumber').text(doctor.phoneNumber);
+                $('#showSpecialization').text(doctor.specialization);
+                $('#showSpecializationYear').text(doctor.specializationYear);
+                $('#showUniversity').text(doctor.graduationUniversity);
+                $('#showUniversityYear').text(doctor.graduationYear);
+            });
+
+            $('#doctor-info-modal').modal('show');
+
+        })
+
     });
 </script>
 <title>Dashboard</title>

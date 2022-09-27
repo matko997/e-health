@@ -1,7 +1,6 @@
 package com.zavrsnirad.e_zdravlje.controller;
 
 import com.zavrsnirad.e_zdravlje.model.User;
-import com.zavrsnirad.e_zdravlje.repository.UserRepository;
 import com.zavrsnirad.e_zdravlje.service.UserService;
 import com.zavrsnirad.e_zdravlje.util.Validator;
 import org.springframework.stereotype.Controller;
@@ -17,11 +16,10 @@ import java.util.Optional;
 public class DoctorController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
-    public DoctorController(UserService userService, UserRepository userRepository) {
+
+    public DoctorController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @PostMapping("/doktori")
@@ -60,11 +58,31 @@ public class DoctorController {
     }
 
     @GetMapping("/doktori")
-    public String findAllDoctors(Model model) {
-        model.addAttribute("doctors", userService.findAllDoctors());
-
+    public String findDoctorsPaginated(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                                       @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
+        model.addAttribute("doctors", userService.findDoctorsPaginated(pageNumber, size));
         return "doctor-index";
     }
+
+//    @GetMapping("/doktori/{page}")
+//    public String findAllDoctors(Model model, @PathVariable("page") int currentPage) {
+//        Page<User> page = userService.findDoctorsPaginated(currentPage - 1);
+//        int totalPages = page.getTotalPages();
+//        long totalItems = page.getTotalElements();
+//        List<User> doctors = page.getContent();
+//
+//        model.addAttribute("currentPage", currentPage);
+//        model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("totalItems", totalItems);
+//        model.addAttribute("doctors", doctors);
+//
+//        return "doctor-index";
+//    }
+
+//    @GetMapping("/doktori")
+//    public String getAllPages(Model model) {
+//        return findAllDoctors(model, 1);
+//    }
 
     @RequestMapping(value = "/doktor")
     @ResponseBody

@@ -1,11 +1,15 @@
 package com.zavrsnirad.e_zdravlje.service;
 
+import com.zavrsnirad.e_zdravlje.dto.Paged;
+import com.zavrsnirad.e_zdravlje.dto.Paging;
 import com.zavrsnirad.e_zdravlje.dto.UserProfileDto;
 import com.zavrsnirad.e_zdravlje.dto.UserRegisterDto;
 import com.zavrsnirad.e_zdravlje.model.Role;
 import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.repository.RoleRepository;
 import com.zavrsnirad.e_zdravlje.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -99,9 +103,15 @@ public class UserService {
                 .build();
     }
 
-    public List<User> findAllDoctors() {
-        return userRepository.findAllByRole("DOCTOR");
-    }
+//    public Page<User> findDoctorsPaginated(int page) {
+//        Pageable pageable = PageRequest.of(page, 10);
+//        return userRepository.findAllByRole_Name("DOCTOR", pageable);
+//    }
+public Paged<User> findDoctorsPaginated(int pageNumber, int size) {
+    PageRequest request = PageRequest.of(pageNumber - 1, size);
+    Page<User> doctorPage = userRepository.findAllByRole_Name("DOCTOR",request);
+    return new Paged<>(doctorPage, Paging.of(doctorPage.getTotalPages(), pageNumber, size));
+}
 
     public void editUser(User user) {
         Optional<User> optionalUser = userRepository.findById(user.getId());
@@ -114,10 +124,10 @@ public class UserService {
         doctor.setGraduationUniversity(user.getGraduationUniversity());
         doctor.setGraduationYear(user.getGraduationYear());
 
-        if(Objects.nonNull(user.getGender())){
+        if (Objects.nonNull(user.getGender())) {
             doctor.setGender(user.getGender());
         }
-        if(Objects.nonNull(user.getEmail())){
+        if (Objects.nonNull(user.getEmail())) {
             doctor.setEmail(user.getEmail());
         }
 

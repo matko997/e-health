@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,9 +28,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
 
     public Optional<User> findById(long id) {
         return userRepository.findById(id);
@@ -103,15 +99,17 @@ public class UserService {
                 .build();
     }
 
-//    public Page<User> findDoctorsPaginated(int page) {
-//        Pageable pageable = PageRequest.of(page, 10);
-//        return userRepository.findAllByRole_Name("DOCTOR", pageable);
-//    }
-public Paged<User> findDoctorsPaginated(int pageNumber, int size) {
-    PageRequest request = PageRequest.of(pageNumber - 1, size);
-    Page<User> doctorPage = userRepository.findAllByRole_Name("DOCTOR",request);
-    return new Paged<>(doctorPage, Paging.of(doctorPage.getTotalPages(), pageNumber, size));
-}
+    public Paged<User> findDoctorsPaginated(int pageNumber, int size) {
+        PageRequest request = PageRequest.of(pageNumber - 1, size);
+        Page<User> doctorPage = userRepository.findAllDoctors("DOCTOR", request);
+        return new Paged<>(doctorPage, Paging.of(doctorPage.getTotalPages(), pageNumber, size));
+    }
+
+    public Paged<User> findDoctorsPaginatedAndFiltered(int pageNumber, int size,String keyword) {
+        PageRequest request = PageRequest.of(pageNumber - 1, size);
+        Page<User> doctorPage = userRepository.findAllDoctorsFilterable("DOCTOR", keyword, request);
+        return new Paged<>(doctorPage, Paging.of(doctorPage.getTotalPages(), pageNumber, size));
+    }
 
     public void editUser(User user) {
         Optional<User> optionalUser = userRepository.findById(user.getId());
@@ -119,6 +117,9 @@ public Paged<User> findDoctorsPaginated(int pageNumber, int size) {
 
         doctor.setFirstName(user.getFirstName());
         doctor.setLastName(user.getLastName());
+        doctor.setCity(user.getCity());
+        doctor.setAddress(user.getAddress());
+        doctor.setPhoneNumber(user.getPhoneNumber());
         doctor.setSpecialization(user.getSpecialization());
         doctor.setSpecializationYear(user.getSpecializationYear());
         doctor.setGraduationUniversity(user.getGraduationUniversity());

@@ -6,10 +6,30 @@
 <body>
 
 <div layout:fragment="content" class="container">
-    <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#addModal">Dodaj novog
-        doktora
-    </button>
 
+    <div class="row mt-4">
+        <div class="col-md-3 pe-0" style="width: 200px">
+            <button type="button" class="btn btn-primary" style="width: 12rem" data-bs-toggle="modal"
+                    data-bs-target="#addModal">Dodaj novog
+                doktora
+            </button>
+        </div>
+        <div class="col-md-4 ">
+            <form method="get" th:action="@{/doktori}">
+                <div class="input-group">
+                    <label for="keyword-search"></label><input
+                        class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
+                        id="keyword-search" name="filter">
+                    <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                                        type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <form method="post" th:action="@{/doktori}">
             <div class="modal-dialog">

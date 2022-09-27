@@ -59,30 +59,15 @@ public class DoctorController {
 
     @GetMapping("/doktori")
     public String findDoctorsPaginated(@RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
-                                       @RequestParam(value = "velicina", required = false, defaultValue = "10") int size, Model model) {
-        model.addAttribute("doctors", userService.findDoctorsPaginated(pageNumber, size));
+                                       @RequestParam(value = "velicina", required = false, defaultValue = "10") int size, @RequestParam(value = "filter", required = false) String keyword, Model model) {
+        if(Objects.isNull(keyword)){
+            model.addAttribute("doctors", userService.findDoctorsPaginated(pageNumber, size));
+            return "doctor-index";
+        }
+        model.addAttribute("doctors",userService.findDoctorsPaginatedAndFiltered(pageNumber,size,keyword));
         return "doctor-index";
     }
 
-//    @GetMapping("/doktori/{page}")
-//    public String findAllDoctors(Model model, @PathVariable("page") int currentPage) {
-//        Page<User> page = userService.findDoctorsPaginated(currentPage - 1);
-//        int totalPages = page.getTotalPages();
-//        long totalItems = page.getTotalElements();
-//        List<User> doctors = page.getContent();
-//
-//        model.addAttribute("currentPage", currentPage);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("totalItems", totalItems);
-//        model.addAttribute("doctors", doctors);
-//
-//        return "doctor-index";
-//    }
-
-//    @GetMapping("/doktori")
-//    public String getAllPages(Model model) {
-//        return findAllDoctors(model, 1);
-//    }
 
     @RequestMapping(value = "/doktor")
     @ResponseBody

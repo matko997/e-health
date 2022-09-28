@@ -1,5 +1,6 @@
 package com.zavrsnirad.e_zdravlje.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class User {
     private String bloodType;
     @Column(name = "password")
     private String password;
+    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(name = "birth_date")
     private LocalDate birthDay;
     @Column(name = "gender")
@@ -50,6 +52,7 @@ public class User {
     @Column(name = "specialization_year")
     private Integer specializationYear;
     @CreationTimestamp
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonIgnore
     @ManyToOne()

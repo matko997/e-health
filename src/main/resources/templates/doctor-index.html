@@ -2,8 +2,69 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout.html}" lang="en"
       xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Doktori</title>
+    <script type="text/javascript">
+        $('document').ready(function () {
+            $('.edit-user').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+
+                $.get(href, function (doctor) {
+                    $('#idEdit').val(doctor.id);
+                    $('#firstNameEdit').val(doctor.firstName);
+                    $('#lastNameEdit').val(doctor.lastName);
+                    $('#cityEdit').val(doctor.city);
+                    $('#addressEdit').val(doctor.address);
+                    $('#phoneNumberEdit').val(doctor.phoneNumber);
+                    $('#specializationEdit').val(doctor.specialization);
+                    $('#specializationYearEdit').val(doctor.specializationYear);
+                    $('#graduatedAtEdit').val(doctor.graduationUniversity);
+                    $('#graduationYearEdit').val(doctor.graduationYear);
+                });
+
+                $('#editModal').modal('show');
+            });
+
+            $('.delete-user').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+                $('#deleteModal #delHref').attr('href', href);
+                $('#deleteModal').modal('show');
+
+            })
+
+            $('.show-user').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+
+                $.get(href, function (doctor) {
+                    $('#showFirstName').text(doctor.firstName);
+                    $('#showLastName').text(doctor.lastName);
+                    $('#showCity').text(doctor.city);
+                    $('#showGender').text(doctor.gender);
+                    $('#showBirthDay').text(doctor.birthDay);
+                    $('#showAddress').text(doctor.address);
+                    $('#showPhoneNumber').text(doctor.phoneNumber);
+                    $('#showSpecialization').text(doctor.specialization);
+                    $('#showSpecializationYear').text(doctor.specializationYear);
+                    $('#showUniversity').text(doctor.graduationUniversity);
+                    $('#showUniversityYear').text(doctor.graduationYear);
+                });
+
+                $('#doctor-info-modal').modal('show');
+
+            })
+
+        });
+    </script>
+</head>
 
 <body>
+
 
 <div layout:fragment="content" class="container">
 
@@ -123,6 +184,101 @@
             </div>
         </form>
     </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <form method="put" th:action="@{/doktori/uredi}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Uredi doktora</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="mb-3 form-group">
+                            <input placeholder="id" type="text" class="form-control" id="idEdit"
+                                   name="id"
+                                   hidden>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="firstNameEdit" class="col-form-label">Ime:</label>
+                            <input placeholder="ime" type="text" class="form-control" id="firstNameEdit"
+                                   name="firstName"
+                                   required>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="lastNameEdit" class="col-form-label">Prezime:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="lastNameEdit"
+                                   name="lastName"
+                                   required>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="cityEdit" class="col-form-label">Grad:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="cityEdit"
+                                   name="city"
+                            >
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="addressEdit" class="col-form-label">Adresa:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="addressEdit"
+                                   name="address"
+                            >
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="phoneNumberEdit" class="col-form-label">Broj telefona:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="phoneNumberEdit"
+                                   name="phoneNumber"
+                            >
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="graduatedAtEdit" class="col-form-label">Diplomirao:</label>
+                            <input placeholder="sveučilište" type="text" class="form-control" id="graduatedAtEdit"
+                                   name="graduationUniversity">
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="graduationYearEdit" class="col-form-label">Godina:</label>
+                            <input placeholder="godina završetka studija" type="number" min="1950" max="2022"
+                                   step="1"
+                                   value="2016" class="form-control"
+                                   id="graduationYearEdit" name="graduationYear">
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="specializationEdit" class="col-form-label">Specijalizacija:</label>
+                            <input placeholder="Npr. kirurg...Polje nije obavezno" type="text" class="form-control"
+                                   id="specializationEdit" name="specialization">
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="specializationYearEdit" class="col-form-label">Godina
+                                specijalizacije:</label>
+                            <input placeholder="Specijalizirao godine...Polje nije obavezno" type="number"
+                                   min="1950"
+                                   max="2022" step="1" value="2016"
+                                   class="form-control"
+                                   id="specializationYearEdit" name="specializationYear">
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="submit" class="btn btn-primary">Spremi</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
     <div class="modal" tabindex="-1" id="deleteModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -140,6 +296,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="doctor-info-modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

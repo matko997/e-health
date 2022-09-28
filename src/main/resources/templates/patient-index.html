@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pacijenti</title>
+    <script>
+        $('document').ready(function () {
+
+
+            $('.delete-patient').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+                $('#deletePatientModal #delHref').attr('href', href);
+                $('#deletePatientModal').modal('show');
+
+            })
+
+            $('.show-patient-info').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+
+                $.get(href, function (patient) {
+                    $('#showPatientFirstName').text(patient.firstName);
+                    $('#showPatientLastName').text(patient.lastName);
+                    $('#showPatientCity').text(patient.city);
+                    $('#showPatientGender').text(patient.gender);
+                    $('#showPatientBirthDay').text(patient.birthDay);
+                    $('#showPatientAddress').text(patient.address);
+                    $('#showPatientPhoneNumber').text(patient.phoneNumber);
+                    $('#showPatientBloodType').text(patient.bloodType);
+                    $('#showPatientJmbg').text(patient.jmbg);
+                    $('#showPatientCreatedAt').text(patient.createdAt);
+                    $('#showPatientPostalCode').text(patient.postalCode);
+
+
+
+
+                });
+
+                $('#patient-info-modal').modal('show');
+
+            })
+
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="row mt-4">
+        <div class="col-md-4 ">
+            <form method="get" th:action="@{/pacijenti}">
+                <div class="input-group">
+                    <label for="keyword-search"></label><input
+                        class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
+                        id="keyword-search" name="filter">
+                    <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                                        type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <form method="put" th:action="@{/pacijenti/uredi}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Uredi pacijenta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="mb-3 form-group">
+                            <input placeholder="id" type="text" class="form-control" id="idEdit"
+                                   name="id"
+                                   hidden>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="firstNameEdit" class="col-form-label">Ime:</label>
+                            <input placeholder="ime" type="text" class="form-control" id="firstNameEdit"
+                                   name="firstName"
+                                   required>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="lastNameEdit" class="col-form-label">Prezime:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="lastNameEdit"
+                                   name="lastName"
+                                   required>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="cityEdit" class="col-form-label">Grad:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="cityEdit"
+                                   name="city"
+                            >
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="addressEdit" class="col-form-label">Adresa:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="addressEdit"
+                                   name="address"
+                            >
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="phoneNumberEdit" class="col-form-label">Broj telefona:</label>
+                            <input placeholder="prezime" type="text" class="form-control" id="phoneNumberEdit"
+                                   name="phoneNumber"
+                            >
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="submit" class="btn btn-primary">Spremi</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="modal" tabindex="-1" id="deletePatientModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Obriši pacijenta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Jeste li sigurni da želite obrisati ovaj zapis?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne</button>
+                    <a href="" type="button" class="btn btn-danger" id="delHref">Da, obriši</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="patient-info-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detalji o pacijentu</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container rounded bg-white mt-5 mb-5">
+                        <div class="row">
+                            <div class="col-md">
+                                <div class="p-3 py-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-user"></i></span> Ime:<span
+                                                    id="showPatientFirstName"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-user"></i></span> Prezime:<span
+                                                    id="showPatientLastName"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-venus-mars"></i></span> Spol:<span
+                                                    id="showPatientGender"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-calendar-days"></i></span> Datum rođenja:<span
+                                                    id="showPatientBirthDay"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-phone"></i></span> Broj telefona:<span
+                                                    id="showPatientPhoneNumber"></span></label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-city"></i></span> Grad:<span
+                                                    id="showPatientCity"></span> </label>
+                                        </div>
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-address-book"></i></span> Adresa:<span
+                                                    id="showPatientAddress"></span> </label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-envelopes-bulk"></i></span> Poštanski broj:<span
+                                                    id="showPatientPostalCode"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-hashtag"></i></span> Jmbg:<span
+                                                    id="showPatientJmbg"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-syringe"></i></span> Krvna grupa:<span
+                                                    id="showPatientBloodType"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-6 mt-4">
+                                            <label class="labels fs-6 fw-bold fst-italic font-monospace"><span><i class="fa-solid fa-calendar-days"></i></span> Registriran:<span
+                                                    id="showPatientCreatedAt"></span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer mt-5">
+                                        <button type="button" class="btn btn-secondary mt-4" data-bs-dismiss="modal">
+                                            Zatvori
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-5">
+        <div class="col-md">
+            <div class="table-responsive-md">
+                <table class="table rounded rounded-3 overflow-hidden">
+                    <thead>
+                    <tr>
+                        <th scope="col">Ime</th>
+                        <th scope="col">Prezime</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Grad</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="patient : ${patients.page}">
+                        <td th:text="${patient.firstName}"></td>
+                        <td th:text="${patient.lastName}"></td>
+                        <td th:text="${patient.email}"></td>
+                        <td th:text="${patient.city}"></td>
+                        <td>
+                            <a th:href="@{/pacijent(id=${patient.id})}"
+                               class="btn btn-success show-patient-info" style="font-size: 12px;"><i
+                                    class="fa-solid fa-user"></i></a>
+                            <a th:href="@{/pacijenti/obrisi(id=${patient.id})}"
+                               class="btn btn-danger delete-patient"
+                               style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation" class="paging">
+                    <ul class="pagination" th:if="${patients.page.totalPages > 1}">
+                        <li class="page-item"
+                            th:classappend="${!patients.paging.isPrevEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/pacijenti?stranica=' + ${patients.paging.pageNumber - 1}}"
+                               tabindex="-1">Prethodna</a>
+                        </li>
+                        <th:block th:each="item : ${patients.paging.getItems()}">
+                            <li class="page-item"
+                                th:classappend="${item.index == patients.paging.pageNumber? 'active' : ''}"
+                                th:if="${item.pageItemType.name() == 'PAGE'}">
+                                <a class="page-link"
+                                   th:href="@{'/pacijenti?stranica=' + ${item.index}}"
+                                   th:text="${item.index}"></a>
+                            </li>
+                            <li class="page-item disabled"
+                                th:if="${item.pageItemType.name() == 'DOTS'}">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                        </th:block>
+                        <li class="page-item"
+                            th:classappend="${!patients.paging.isNextEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/pacijenti?stranica=' + ${patients.paging.pageNumber + 1}}">Sljedeća</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="alert alert-primary" role="alert" th:text="${success}"
+                     th:if="${success}"></div>
+                <div class="alert alert-danger" role="alert" th:text="${error}"
+                     th:if="${error}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

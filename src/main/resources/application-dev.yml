@@ -30,4 +30,9 @@ spring:
       hibernate:
         format_sql: true
 
+  mvc:
+    format:
+      date: dd-MM-yyyy
+      date-time: dd-MM-yyyy HH:mm:ss
+
 

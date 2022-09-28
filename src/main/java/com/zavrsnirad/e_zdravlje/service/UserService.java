@@ -111,6 +111,18 @@ public class UserService {
         return new Paged<>(doctorPage, Paging.of(doctorPage.getTotalPages(), pageNumber, size));
     }
 
+    public Paged<User> findPatientsPaginated(int pageNumber, int size) {
+        PageRequest request = PageRequest.of(pageNumber - 1, size);
+        Page<User> patientPage = userRepository.findAllDoctors("PATIENT", request);
+        return new Paged<>(patientPage, Paging.of(patientPage.getTotalPages(), pageNumber, size));
+    }
+
+    public Paged<User> findPatientsPaginatedAndFiltered(int pageNumber, int size,String keyword) {
+        PageRequest request = PageRequest.of(pageNumber - 1, size);
+        Page<User> doctorPage = userRepository.findAllDoctorsFilterable("PATIENT", keyword, request);
+        return new Paged<>(doctorPage, Paging.of(doctorPage.getTotalPages(), pageNumber, size));
+    }
+
     public void editUser(User user) {
         Optional<User> optionalUser = userRepository.findById(user.getId());
         User doctor = optionalUser.get();

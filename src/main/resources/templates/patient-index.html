@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout.html}" lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Pacijenti</title>
@@ -261,7 +262,7 @@
                         <td th:text="${patient.email}"></td>
                         <td th:text="${patient.city}"></td>
                         <td>
-                            <a th:href="@{/pacijent(id=${patient.id})}"
+                            <a  th:href="@{/pacijent(id=${patient.id})}"
                                class="btn btn-success show-patient-info" style="font-size: 12px;"><i
                                     class="fa-solid fa-user"></i></a>
                             <a th:href="@{/pacijenti/obrisi(id=${patient.id})}"

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,5 +49,11 @@ public class PatientController {
     @ResponseBody
     public Optional<User> findOneDoctor(long id) {
         return userService.findById(id);
+    }
+
+    @RequestMapping(value = "/pacijenti/json")
+    @ResponseBody
+    public List<User> findAllPatients() {
+        return userService.findAllPatients();
     }
 }

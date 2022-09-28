@@ -42,15 +42,14 @@
     <div class="border-end bg-white" id="sidebar-wrapper">
         <div class="sidebar-heading border-bottom bg-light">E Zdravlje</div>
         <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/sastanci}">Sastanci</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/doktori}">Doktori</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/pacijenti}">Pacijenti</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Labaratorijski
-                nalazi</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Cjepiva</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Alergije</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Krvni tlak</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Krvni šećer</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/sastanci}"><span><i class="fa-solid fa-calendar-check"></i></span>    Sastanci</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/doktori}"><span><i class="fa-solid fa-user-doctor"></i></span>   Doktori</a>
+            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/pacijenti}"><span><i class="fa-solid fa-hospital-user"></i></span>   Pacijenti</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><span><i class="fa-solid fa-vial"></i></span>  Labaratorijski nalazi</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/cjepiva}"><span><i class="fa-solid fa-virus"></i></span>Cjepiva</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><span><i class="fa-solid fa-hand-dots"></i></span>  Alergije</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><span><i class="fa fa-heartbeat"></i></span> Krvni tlak</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><span><i class="fa-solid fa-syringe"></i></span>  Krvni šećer</a>
         </div>
     </div>
     <!-- Page content wrapper-->

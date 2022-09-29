@@ -69,4 +69,14 @@ public class VaccineService {
         vaccine.setCreatedAt(LocalDateTime.now(zone));
         vaccineRepository.save(vaccine);
     }
+
+    public void editVaccine(Vaccine vaccine) {
+        Optional<Vaccine> vaccineOptional = vaccineRepository.findById(vaccine.getId());
+        vaccineOptional.get().setName(vaccine.getName());
+        vaccineRepository.save(vaccineOptional.get());
+    }
+
+    public Optional<Vaccine> getById(long id) {
+        return vaccineRepository.findById(id);
+    }
 }

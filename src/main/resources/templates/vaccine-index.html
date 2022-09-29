@@ -12,32 +12,24 @@
             $('.edit-vaccine').on('click', function (event) {
                 event.preventDefault();
 
-                // const href = $(this).attr('href');
+                const href = $(this).attr('href');
 
-                // $.get(href, function (doctor) {
-                //   $('#idEdit').val(doctor.id);
-                //   $('#firstNameEdit').val(doctor.firstName);
-                //   $('#lastNameEdit').val(doctor.lastName);
-                //   $('#cityEdit').val(doctor.city);
-                //   $('#addressEdit').val(doctor.address);
-                //   $('#phoneNumberEdit').val(doctor.phoneNumber);
-                //   $('#specializationEdit').val(doctor.specialization);
-                //   $('#specializationYearEdit').val(doctor.specializationYear);
-                //   $('#graduatedAtEdit').val(doctor.graduationUniversity);
-                //   $('#graduationYearEdit').val(doctor.graduationYear);
-                // });
+                $.get(href, function (vaccine) {
+                    $('#idVaccineEdit').val(vaccine.id);
+                    $('#vaccineNameEdit').val(vaccine.name);
+                });
 
                 $('#editVaccineModal').modal('show');
             });
 
-            $('.addVaccine').on('click',function (event){
+            $('.addVaccine').on('click', function (event) {
                 event.preventDefault();
                 const url = '/pacijenti/json';
 
-                $.get(url,function (patients){
+                $.get(url, function (patients) {
                     var s = '<option value="-1">Odaberite pacijenta</option>';
                     for (var i = 0; i < patients.length; i++) {
-                        s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName +' '+ patients[i].lastName + '</option>';
+                        s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
                     }
                     $("#patients-dropdown").html(s);
                 })
@@ -67,7 +59,7 @@
             </button>
         </div>
         <div class="col-md-4 ">
-            <form method="get" th:action="@{/doktori}">
+            <form method="get" th:action="@{/cjepiva}">
                 <div class="input-group">
                     <label for="keyword-search"></label><input
                         class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
@@ -117,7 +109,8 @@
                         </div>
 
                         <div class="mb-3 form-group">
-                            <select class="form-select" name="patientId" id="patients-dropdown" aria-label="Default select example">
+                            <select class="form-select" name="patientId" id="patients-dropdown"
+                                    aria-label="Default select example">
                             </select>
                         </div>
 
@@ -144,7 +137,7 @@
                     <div class="modal-body">
 
                         <div class="mb-3 form-group">
-                            <input placeholder="id" type="text" class="form-control" id="idEdit"
+                            <input placeholder="id" type="text" class="form-control" id="idVaccineEdit"
                                    name="id"
                                    hidden>
                         </div>
@@ -155,11 +148,6 @@
                                    name="name">
                         </div>
 
-                        <div class="mb-3 form-group">
-                            <label for="vaccineDateEdit" class="col-form-label"></label>
-                            <input placeholder="datum" type="text" class="form-control" id="vaccineDateEdit"
-                                   name="lastName">
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
@@ -193,7 +181,8 @@
                                class="btn btn-warning edit-vaccine"
                                style="font-size: 12px"><i
                                     class="fas fa-user-edit"></i></a>
-                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" th:href="@{/cjepiva/obrisi(id=${vaccine.id})}"
+                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                               th:href="@{/cjepiva/obrisi(id=${vaccine.id})}"
                                class="btn btn-danger delete-vaccine"
                                style="font-size: 12px"><i class="fas fa-user-times"></i></a>
                         </td>

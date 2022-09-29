@@ -155,7 +155,12 @@
                             <div class="mt-5 text-center">
                                 <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
                             </div>
+
                         </div>
+                        <div class="alert alert-primary mt-2" role="alert" th:text="${success}"
+                             th:if="${success}"></div>
+                        <div class="alert alert-danger mt-2" role="alert" th:text="${error}"
+                             th:if="${error}"></div>
                     </div>
                 </div>
             </div>

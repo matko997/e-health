@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/racun")
-    public String updateUserProfile(@Valid @ModelAttribute("user") UserProfileDto userProfileDto, BindingResult bindingResult) {
+    public String updateUserProfile(@Valid @ModelAttribute("user") UserProfileDto userProfileDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (Objects.nonNull(userProfileDto.getJmbg()) && !userProfileDto.getJmbg().equals("") && Validator.isInvalidJmbg(userProfileDto.getJmbg())) {
             bindingResult.rejectValue("jmbg",
@@ -52,6 +53,7 @@ public class UserController {
         }
 
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Došlo je do pogreške, molimo vas da pokušate ponovno");
             return "update-user-profile";
         }
 
@@ -62,6 +64,7 @@ public class UserController {
         Optional<User> user = userService.findByEmail(email);
 
         userService.saveUserProfile(user.get(), userProfileDto);
+        redirectAttributes.addFlashAttribute("success", "Račun ažuriran uspješno");
 
 
         return "redirect:/racun";

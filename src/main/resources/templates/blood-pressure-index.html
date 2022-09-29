@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Krvni tlak</title>
+
+  <script type="text/javascript">
+    $('document').ready(function () {
+      $('.edit-bloodPressure').on('click', function (event) {
+        event.preventDefault();
+
+        const href = $(this).attr('href');
+
+        $.get(href, function (bloodPressure) {
+          $('#idBloodPressureEdit').val(bloodPressure.id);
+          $('#lowerValueBloodPressureEdit').val(bloodPressure.lowerValue);
+          $('#upperValueBloodPressureEdit').val(bloodPressure.upperValue);
+          $('#pulseBloodPressureEdit').val(bloodPressure.pulse);
+        });
+
+        $('#editBloodPressureModal').modal('show');
+      });
+
+      $('.addBloodPressure').on('click', function (event) {
+        event.preventDefault();
+        const url = '/pacijenti/json';
+
+        $.get(url, function (patients) {
+          var s = '<option value="-1">Odaberite pacijenta</option>';
+          for (var i = 0; i < patients.length; i++) {
+            s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
+          }
+          $("#patients-blood-pressure-dropdown").html(s);
+        })
+
+
+      })
+
+      $('.delete-bloodPressure').on('click', function (event) {
+        event.preventDefault();
+
+        const href = $(this).attr('href');
+        $('#deleteBloodPressureModal #delHref').attr('href', href);
+        $('#deleteBloodPressureModal').modal('show');
+
+      })
+
+
+    });
+  </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+  <div class="row mt-4">
+    <div sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" class="col-md-3 pe-0" style="width: 200px">
+      <button type="button" class="btn btn-primary addBloodPressure" style="width: 12rem" data-bs-toggle="modal"
+              data-bs-target="#addBloodPressureModal">Dodaj
+      </button>
+    </div>
+    <div class="col-md-4 ">
+      <form method="get" th:action="@{/krvni-tlakovi}">
+        <div class="input-group">
+          <label for="keyword-search"></label><input
+                class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
+                id="keyword-search" name="filter">
+          <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                                        type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                    </span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addBloodPressureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" th:action="@{/krvni-tlakovi}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Novi zapis o krvnom tlaku</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="mb-3 form-group">
+              <label for="lowerValue" class="col-form-label"></label>
+              <input placeholder="Donja vrijednost" type="number" min="20" max="150" class="form-control" id="lowerValue" name="lowerValue"
+                     required>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="upperValue" class="col-form-label"></label>
+              <input placeholder="Gornja vrijednost" type="number" min="60" max="250" class="form-control" id="upperValue" name="upperValue"
+                     required>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="pulse" class="col-form-label"></label>
+              <input placeholder="Puls" type="number" min="20" max="250" class="form-control" id="pulse" name="pulse"
+                     required>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label></label>
+              <select class="form-select" name="patientId" id="patients-blood-pressure-dropdown"
+                      aria-label="Default select example">
+              </select>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+            <button type="submit" class="btn btn-primary">Spremi</button>
+          </div>
+
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="modal" tabindex="-1" id="deleteBloodPressureModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Obriši zapis o krvnom tlaku</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Jeste li sigurni da želite obrisati ovaj zapis?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne</button>
+          <a href="" type="button" class="btn btn-danger" id="delHref">Da, obriši</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editBloodPressureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="put" th:action="@{/krvni-tlak/uredi}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Uredi zapis o krvnom tlaku</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="mb-3 form-group">
+              <input placeholder="id" type="text" class="form-control" id="idBloodPressureEdit"
+                     name="id"
+                     hidden>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="lowerValueBloodPressureEdit" class="col-form-label">Donja vrijednost</label>
+              <input placeholder="Donja vrijednost" type="number" min="20" max="150" class="form-control" id="lowerValueBloodPressureEdit"
+                     name="lowerValue">
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="upperValueBloodPressureEdit" class="col-form-label">Gornja vrijednost</label>
+              <input placeholder="Donja vrijednost" type="number" min="60" max="250" class="form-control" id="upperValueBloodPressureEdit"
+                     name="upperValue">
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="pulseBloodPressureEdit" class="col-form-label">Puls</label>
+              <input placeholder="Puls" type="number" min="20" max="250" class="form-control" id="pulseBloodPressureEdit"
+                     name="pulse">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+            <button type="submit" class="btn btn-primary">Spremi</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md">
+      <div class="table-responsive-md">
+        <table class="table rounded rounded-3 overflow-hidden">
+          <thead>
+          <tr>
+            <th scope="col">Pacijent</th>
+            <th scope="col">Donja vrijednost</th>
+            <th scope="col">Gornja vrijednost</th>
+            <th scope="col">Otkucaji srca</th>
+            <th scope="col">Datum</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="bloodPressure : ${bloodPressures.page}">
+            <td th:text="${bloodPressure.patient.firstName+' '+ bloodPressure.patient.lastName}"></td>
+            <td th:text="${bloodPressure.lowerValue}"></td>
+            <td th:text="${bloodPressure.upperValue}"></td>
+            <td th:text="${bloodPressure.pulse}"></td>
+            <td th:text="${#temporals.format(bloodPressure.createdAt,'dd-MM-yyyy HH:mm')}"></td>
+            <td>
+              <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" th:href="@{/krvni-tlak(id=${bloodPressure.id})}"
+                 class="btn btn-warning edit-bloodPressure"
+                 style="font-size: 12px"><i
+                      class="fas fa-user-edit"></i></a>
+              <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                 th:href="@{/krvni-tlak/obrisi(id=${bloodPressure.id})}"
+                 class="btn btn-danger delete-bloodPressure"
+                 style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation" class="paging">
+          <ul class="pagination" th:if="${bloodPressures.page.totalPages > 1}">
+            <li class="page-item"
+                th:classappend="${!bloodPressures.paging.isPrevEnabled()? 'disabled' : ''}">
+              <a class="page-link"
+                 th:href="@{'/krvni-tlakovi?stranica=' + ${bloodPressures.paging.pageNumber - 1}}"
+                 tabindex="-1">Prethodna</a>
+            </li>
+            <th:block th:each="item : ${bloodPressures.paging.getItems()}">
+              <li class="page-item"
+                  th:classappend="${item.index == bloodPressures.paging.pageNumber? 'active' : ''}"
+                  th:if="${item.pageItemType.name() == 'PAGE'}">
+                <a class="page-link"
+                   th:href="@{'/krvni-tlakovi?stranica=' + ${item.index}}"
+                   th:text="${item.index}"></a>
+              </li>
+              <li class="page-item disabled"
+                  th:if="${item.pageItemType.name() == 'DOTS'}">
+                <a class="page-link" href="#">...</a>
+              </li>
+            </th:block>
+            <li class="page-item"
+                th:classappend="${!bloodPressures.paging.isNextEnabled()? 'disabled' : ''}">
+              <a class="page-link"
+                 th:href="@{'/krvni-tlakovi?stranica=' + ${bloodPressures.paging.pageNumber + 1}}">Sljedeća</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="alert alert-primary" role="alert" th:text="${success}"
+             th:if="${success}"></div>
+        <div class="alert alert-danger" role="alert" th:text="${error}"
+             th:if="${error}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

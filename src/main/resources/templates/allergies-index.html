@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Alergije</title>
+
+  <script type="text/javascript">
+    $('document').ready(function () {
+      $('.edit-allergie').on('click', function (event) {
+        event.preventDefault();
+
+        const href = $(this).attr('href');
+
+        $.get(href, function (allergie) {
+          $('#idAllergieEdit').val(allergie.id);
+          $('#allergieNameEdit').val(allergie.name);
+        });
+
+        $('#editAllergieModal').modal('show');
+      });
+
+      $('.addAllergie').on('click', function (event) {
+        event.preventDefault();
+        const url = '/pacijenti/json';
+
+        $.get(url, function (patients) {
+          var s = '<option value="-1">Odaberite pacijenta</option>';
+          for (var i = 0; i < patients.length; i++) {
+            s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
+          }
+          $("#patients-dropdown").html(s);
+        })
+
+
+      })
+
+      $('.delete-allergie').on('click', function (event) {
+        event.preventDefault();
+
+        const href = $(this).attr('href');
+        $('#deleteAllergieModal #delHref').attr('href', href);
+        $('#deleteAllergieModal').modal('show');
+
+      })
+
+
+    });
+  </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+  <div class="row mt-4">
+    <div sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" class="col-md-3 pe-0" style="width: 200px">
+      <button type="button" class="btn btn-primary addAllergie" style="width: 12rem" data-bs-toggle="modal"
+              data-bs-target="#addAllergieModal">Dodaj
+      </button>
+    </div>
+    <div class="col-md-4 ">
+      <form method="get" th:action="@{/alergije}">
+        <div class="input-group">
+          <label for="keyword-search"></label><input
+                class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
+                id="keyword-search" name="filter">
+          <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                                        type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                    </span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" tabindex="-1" id="deleteAllergieModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Obriši zapis o alergiji</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Jeste li sigurni da želite obrisati ovaj zapis?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne</button>
+          <a href="" type="button" class="btn btn-danger" id="delHref">Da, obriši</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addAllergieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="post" th:action="@{/alergije}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nova alergija</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="mb-3 form-group">
+              <label for="name" class="col-form-label"></label>
+              <input placeholder="Alergija" type="text" class="form-control" id="name" name="name"
+                     required>
+            </div>
+
+            <div class="mb-3 form-group">
+              <select class="form-select" name="patientId" id="patients-dropdown"
+                      aria-label="Default select example">
+              </select>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+            <button type="submit" class="btn btn-primary">Spremi</button>
+          </div>
+
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="modal fade" id="editAllergieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form method="put" th:action="@{/alergije/uredi}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Uredi zapis o alergiji</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="mb-3 form-group">
+              <input placeholder="id" type="text" class="form-control" id="idAllergieEdit"
+                     name="id"
+                     hidden>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="allergieNameEdit" class="col-form-label"></label>
+              <input placeholder="Naziv" type="text" class="form-control" id="allergieNameEdit"
+                     name="name">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+            <button type="submit" class="btn btn-primary">Spremi</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md">
+      <div class="table-responsive-md">
+        <table class="table rounded rounded-3 overflow-hidden">
+          <thead>
+          <tr>
+            <th scope="col">Naziv</th>
+            <th scope="col">Pacijent</th>
+            <th scope="col">Datum</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="allergie : ${allergies.page}">
+            <td th:text="${allergie.name}"></td>
+            <td th:text="${allergie.patient.firstName+' '+ allergie.patient.lastName}"></td>
+            <td th:text="${#temporals.format(allergie.createdAt,'dd-MM-yyyy HH:mm')}"></td>
+            <td>
+              <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" th:href="@{/alergija(id=${allergie.id})}"
+                 class="btn btn-warning edit-allergie"
+                 style="font-size: 12px"><i
+                      class="fas fa-user-edit"></i></a>
+              <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                 th:href="@{/alergija/obrisi(id=${allergie.id})}"
+                 class="btn btn-danger delete-allergie"
+                 style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation" class="paging">
+          <ul class="pagination" th:if="${allergies.page.totalPages > 1}">
+            <li class="page-item"
+                th:classappend="${!allergies.paging.isPrevEnabled()? 'disabled' : ''}">
+              <a class="page-link"
+                 th:href="@{'/alergije?stranica=' + ${allergies.paging.pageNumber - 1}}"
+                 tabindex="-1">Prethodna</a>
+            </li>
+            <th:block th:each="item : ${allergies.paging.getItems()}">
+              <li class="page-item"
+                  th:classappend="${item.index == allergies.paging.pageNumber? 'active' : ''}"
+                  th:if="${item.pageItemType.name() == 'PAGE'}">
+                <a class="page-link"
+                   th:href="@{'/alergije?stranica=' + ${item.index}}"
+                   th:text="${item.index}"></a>
+              </li>
+              <li class="page-item disabled"
+                  th:if="${item.pageItemType.name() == 'DOTS'}">
+                <a class="page-link" href="#">...</a>
+              </li>
+            </th:block>
+            <li class="page-item"
+                th:classappend="${!allergies.paging.isNextEnabled()? 'disabled' : ''}">
+              <a class="page-link"
+                 th:href="@{'/alergije?stranica=' + ${allergies.paging.pageNumber + 1}}">Sljedeća</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="alert alert-primary" role="alert" th:text="${success}"
+             th:if="${success}"></div>
+        <div class="alert alert-danger" role="alert" th:text="${error}"
+             th:if="${error}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

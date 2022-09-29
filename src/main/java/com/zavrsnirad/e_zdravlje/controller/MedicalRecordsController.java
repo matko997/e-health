@@ -1,8 +1,11 @@
 package com.zavrsnirad.e_zdravlje.controller;
 
+import com.zavrsnirad.e_zdravlje.dto.AddAllergieDto;
 import com.zavrsnirad.e_zdravlje.dto.AddVaccineDto;
+import com.zavrsnirad.e_zdravlje.model.Allergie;
 import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.model.Vaccine;
+import com.zavrsnirad.e_zdravlje.service.AllergieService;
 import com.zavrsnirad.e_zdravlje.service.UserService;
 import com.zavrsnirad.e_zdravlje.service.VaccineService;
 import org.springframework.security.core.Authentication;
@@ -22,11 +25,13 @@ public class MedicalRecordsController {
 
     private final VaccineService vaccineService;
     private final UserService userService;
+    private final AllergieService allergieService;
 
 
-    public MedicalRecordsController(VaccineService vaccineService, UserService userService) {
+    public MedicalRecordsController(VaccineService vaccineService, UserService userService, AllergieService allergieService) {
         this.vaccineService = vaccineService;
         this.userService = userService;
+        this.allergieService = allergieService;
     }
 
     @GetMapping("/cjepiva")
@@ -82,7 +87,7 @@ public class MedicalRecordsController {
         vaccineService.addNewVaccine(doctor.get(), addVaccineDto);
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("success", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
             return "redirect:/cjepiva";
         }
         redirectAttributes.addFlashAttribute("success", "Novi zapis o cijepljenju uspješno dodan");
@@ -120,20 +125,65 @@ public class MedicalRecordsController {
 
         if (Objects.isNull(keyword)) {
             if (userOptional.get().getRole().getName().equals("DOCTOR") || userOptional.get().getRole().getName().equals("ADMIN")) {
-                model.addAttribute("vaccines", vaccineService.findVaccinePaginated(pageNumber, size));
-                return "vaccine-index";
+                model.addAttribute("allergies", allergieService.findAllergiesPaginated(pageNumber, size));
+                return "allergies-index";
             } else {
-                model.addAttribute("vaccines", vaccineService.findVaccinePaginatedForPatient(pageNumber, size, userOptional.get()));
-                return "vaccine-index";
+                model.addAttribute("allergies", allergieService.findAllergiesPaginatedForPatient(pageNumber, size, userOptional.get()));
+                return "allergies-index";
             }
         }
         if (userOptional.get().getRole().getName().equals("DOCTOR") || userOptional.get().getRole().getName().equals("ADMIN")) {
-            model.addAttribute("vaccines", vaccineService.findVaccinePaginatedAndFiltered(pageNumber, size, keyword));
-            return "vaccine-index";
+            model.addAttribute("allergies", allergieService.findAllergiesPaginatedFilterable(pageNumber, size, keyword));
+            return "allergies-index";
         } else {
-            model.addAttribute("vaccines", vaccineService.findVaccinePaginatedAndFilterableForPatient(pageNumber, size, userOptional.get(), keyword));
-            return "vaccine-index";
+            model.addAttribute("allergies", allergieService.findAllergiesPaginatedAndFilterableForPatient(pageNumber, size, userOptional.get(), keyword));
+            return "allergies-index";
         }
 
+    }
+
+    @PostMapping("/alergije")
+    public String addNewAllergie(AddAllergieDto addAllergieDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        allergieService.addNewVaccine(addAllergieDto);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/alergije";
+        }
+        redirectAttributes.addFlashAttribute("success", "Novi zapis o alergijama uspješno dodan");
+
+        return "redirect:/alergije";
+    }
+
+    @RequestMapping(value = "/alergija")
+    @ResponseBody
+    public Optional<Allergie> findOneAllergie(long id) {
+        return allergieService.getById(id);
+    }
+
+    @RequestMapping(value = "/alergije/uredi", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String updateAllergie(Allergie allergie, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/alergije";
+        }
+        allergieService.editAllergie(allergie);
+        redirectAttributes.addFlashAttribute("success", "Alergija uspješno ažurirana");
+        return "redirect:/alergije";
+    }
+
+    @RequestMapping(value = "/alergija/obrisi", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteAllergie(long id, RedirectAttributes redirectAttributes) {
+        try {
+            allergieService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Zapis o alergiji uspješno obrisan.");
+            return "redirect:/alergije";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/alergije";
+        }
     }
 }

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dijabetes</title>
+
+    <script type="text/javascript">
+        $('document').ready(function () {
+            $('.edit-diabetes').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+
+                $.get(href, function (diabetes) {
+                    $('#idDiabetesEdit').val(diabetes.id);
+                    $('#diabetesValueEdit').val(diabetes.value);
+                });
+
+                $('#editDiabetesModal').modal('show');
+            });
+
+            $('.addDiabetes').on('click', function (event) {
+                event.preventDefault();
+                const url = '/pacijenti/json';
+
+                $.get(url, function (patients) {
+                    var s = '<option value="-1">Odaberite pacijenta</option>';
+                    for (var i = 0; i < patients.length; i++) {
+                        s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
+                    }
+                    $("#patients-diabetes-dropdown").html(s);
+                })
+
+
+            })
+
+            $('.delete-diabetes').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+                $('#deleteDiabetesModal #delHref').attr('href', href);
+                $('#deleteDiabetesModal').modal('show');
+
+            })
+
+
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="row mt-4">
+        <div sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" class="col-md-3 pe-0" style="width: 200px">
+            <button type="button" class="btn btn-primary addDiabetes" style="width: 12rem" data-bs-toggle="modal"
+                    data-bs-target="#addDiabetesModal">Dodaj
+            </button>
+        </div>
+        <div class="col-md-4 ">
+            <form method="get" th:action="@{/dijabetesi}">
+                <div class="input-group">
+                    <label for="keyword-search"></label><input
+                        class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
+                        id="keyword-search" name="filter">
+                    <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                                        type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="deleteDiabetesModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Obriši zapis o krvnom šećeru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Jeste li sigurni da želite obrisati ovaj zapis?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne</button>
+                    <a href="" type="button" class="btn btn-danger" id="delHref">Da, obriši</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addDiabetesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form method="post" th:action="@{/dijabetesi}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Novi zapis o krvnom šećeru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="mb-3 form-group">
+                            <label for="value" class="col-form-label"></label>
+                            <input placeholder="Vrijednost mmol/L" type="number" min="1" max="50" step="0.1" class="form-control" id="value" name="value"
+                                   required>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <select class="form-select" name="patientId" id="patients-diabetes-dropdown"
+                                    aria-label="Default select example">
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="submit" class="btn btn-primary">Spremi</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="editDiabetesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form method="put" th:action="@{/dijabetes/uredi}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Uredi zapis o krvnom šećeru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="mb-3 form-group">
+                            <input placeholder="id" type="text" class="form-control" id="idDiabetesEdit"
+                                   name="id"
+                                   hidden>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="diabetesValueEdit" class="col-form-label"></label>
+                            <input placeholder="Vrijednost mmol/L" type="number" min="1" max="50" step="0.1" class="form-control" id="diabetesValueEdit"
+                                   name="value">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="submit" class="btn btn-primary">Spremi</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md">
+            <div class="table-responsive-md">
+                <table class="table rounded rounded-3 overflow-hidden">
+                    <thead>
+                    <tr>
+                        <th scope="col">Pacijent</th>
+                        <th scope="col">Vrijednost mmol/L</th>
+                        <th scope="col">Datum</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="diabetes : ${diabeteses.page}">
+                        <td th:text="${diabetes.patient.firstName+' '+ diabetes.patient.lastName}"></td>
+                        <td th:text="${diabetes.value}"></td>
+                        <td th:text="${#temporals.format(diabetes.createdAt,'dd-MM-yyyy HH:mm')}"></td>
+                        <td>
+                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" th:href="@{/dijabetes(id=${diabetes.id})}"
+                               class="btn btn-warning edit-diabetes"
+                               style="font-size: 12px"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                               th:href="@{/dijabetes/obrisi(id=${diabetes.id})}"
+                               class="btn btn-danger delete-diabetes"
+                               style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation" class="paging">
+                    <ul class="pagination" th:if="${diabeteses.page.totalPages > 1}">
+                        <li class="page-item"
+                            th:classappend="${!diabeteses.paging.isPrevEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/dijabetesi?stranica=' + ${diabeteses.paging.pageNumber - 1}}"
+                               tabindex="-1">Prethodna</a>
+                        </li>
+                        <th:block th:each="item : ${diabeteses.paging.getItems()}">
+                            <li class="page-item"
+                                th:classappend="${item.index == diabeteses.paging.pageNumber? 'active' : ''}"
+                                th:if="${item.pageItemType.name() == 'PAGE'}">
+                                <a class="page-link"
+                                   th:href="@{'/dijabetesi?stranica=' + ${item.index}}"
+                                   th:text="${item.index}"></a>
+                            </li>
+                            <li class="page-item disabled"
+                                th:if="${item.pageItemType.name() == 'DOTS'}">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                        </th:block>
+                        <li class="page-item"
+                            th:classappend="${!diabeteses.paging.isNextEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/dijabetesi?stranica=' + ${diabeteses.paging.pageNumber + 1}}">Sljedeća</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="alert alert-primary" role="alert" th:text="${success}"
+                     th:if="${success}"></div>
+                <div class="alert alert-danger" role="alert" th:text="${error}"
+                     th:if="${error}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

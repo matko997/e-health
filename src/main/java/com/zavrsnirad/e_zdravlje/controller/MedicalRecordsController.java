@@ -3,14 +3,9 @@ package com.zavrsnirad.e_zdravlje.controller;
 import com.zavrsnirad.e_zdravlje.dto.AddAllergieDto;
 import com.zavrsnirad.e_zdravlje.dto.AddVaccineDto;
 import com.zavrsnirad.e_zdravlje.dto.BloodPressureDto;
-import com.zavrsnirad.e_zdravlje.model.Allergie;
-import com.zavrsnirad.e_zdravlje.model.BloodPressure;
-import com.zavrsnirad.e_zdravlje.model.User;
-import com.zavrsnirad.e_zdravlje.model.Vaccine;
-import com.zavrsnirad.e_zdravlje.service.AllergieService;
-import com.zavrsnirad.e_zdravlje.service.BloodPressureService;
-import com.zavrsnirad.e_zdravlje.service.UserService;
-import com.zavrsnirad.e_zdravlje.service.VaccineService;
+import com.zavrsnirad.e_zdravlje.dto.DiabetesDto;
+import com.zavrsnirad.e_zdravlje.model.*;
+import com.zavrsnirad.e_zdravlje.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,13 +25,15 @@ public class MedicalRecordsController {
     private final UserService userService;
     private final AllergieService allergieService;
     private final BloodPressureService bloodPressureService;
+    private final DiabetesService diabetesService;
 
 
-    public MedicalRecordsController(VaccineService vaccineService, UserService userService, AllergieService allergieService, BloodPressureService bloodPressureService) {
+    public MedicalRecordsController(VaccineService vaccineService, UserService userService, AllergieService allergieService, BloodPressureService bloodPressureService, DiabetesService diabetesService) {
         this.vaccineService = vaccineService;
         this.userService = userService;
         this.allergieService = allergieService;
         this.bloodPressureService = bloodPressureService;
+        this.diabetesService = diabetesService;
     }
 
     @GetMapping("/cjepiva")
@@ -263,4 +260,80 @@ public class MedicalRecordsController {
         redirectAttributes.addFlashAttribute("success", "Krvni tlak uspješno ažuriran.");
         return "redirect:/krvni-tlakovi";
     }
+
+    @GetMapping("/dijabetesi")
+    public String findAllDiabetesesPaginated(@RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
+                                                 @RequestParam(value = "velicina", required = false, defaultValue = "10") int size,
+                                                 @RequestParam(value = "filter", required = false) String keyword, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String email = userDetails.getUsername();
+
+        Optional<User> userOptional = userService.findByEmail(email);
+
+        if (Objects.isNull(keyword)) {
+            if (userOptional.get().getRole().getName().equals("DOCTOR") || userOptional.get().getRole().getName().equals("ADMIN")) {
+                model.addAttribute("diabeteses", diabetesService.findDiabetesPaginated(pageNumber, size));
+                return "diabetes-index";
+            } else {
+                model.addAttribute("diabeteses", diabetesService.findDiabetesPaginatedForPatient(pageNumber, size, userOptional.get()));
+                return "diabetes-index";
+            }
+        }
+        if (userOptional.get().getRole().getName().equals("DOCTOR") || userOptional.get().getRole().getName().equals("ADMIN")) {
+            model.addAttribute("diabeteses", diabetesService.findDiabetesPaginatedFilterable(pageNumber, size, keyword));
+            return "diabetes-index";
+        } else {
+            model.addAttribute("diabeteses", diabetesService.findDiabetesPaginatedAndFilterableForPatient(pageNumber, size, userOptional.get(), keyword));
+            return "diabetes-index";
+        }
+
+    }
+
+    @RequestMapping(value = "/dijabetes/obrisi", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteDiabetes(long id, RedirectAttributes redirectAttributes) {
+        try {
+            diabetesService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Zapis o krvnom šećeru uspješno obrisan.");
+            return "redirect:/dijabetesi";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/dijabetesi";
+        }
+    }
+
+    @PostMapping("/dijabetesi")
+    public String addNewDiabetes(DiabetesDto diabetesDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        diabetesService.addNewDiabetes(diabetesDto);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/dijabetesi";
+        }
+        redirectAttributes.addFlashAttribute("success", "Novi zapis o krvnom šećeru uspješno dodan");
+
+        return "redirect:/dijabetesi";
+    }
+
+    @RequestMapping(value = "/dijabetes/uredi", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String updateDiabetes(Diabetes diabetes, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/dijabetesi";
+        }
+        diabetesService.editDiabetes(diabetes);
+        redirectAttributes.addFlashAttribute("success", "Krvni šećer uspješno ažuriran.");
+        return "redirect:/dijabetesi";
+    }
+
+    @RequestMapping(value = "/dijabetes")
+    @ResponseBody
+    public Optional<Diabetes> findOneDiabetes(long id) {
+        return diabetesService.getById(id);
+    }
+
+
 }

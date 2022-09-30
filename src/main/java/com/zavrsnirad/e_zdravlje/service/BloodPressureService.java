@@ -33,20 +33,20 @@ public class BloodPressureService {
 
     public Paged<BloodPressure> findBloodPressuresPaginatedFilterable(int pageNumber, int size, String keyword) {
         PageRequest request = PageRequest.of(pageNumber - 1, size);
-        Page<BloodPressure> vaccinePage = bloodPressureRepository.findBloodPressuresPaginatedAndFilterable(request, keyword);
-        return new Paged<>(vaccinePage, Paging.of(vaccinePage.getTotalPages(), pageNumber, size));
+        Page<BloodPressure> bloodPressurePage = bloodPressureRepository.findBloodPressuresPaginatedAndFilterable(request, keyword);
+        return new Paged<>(bloodPressurePage, Paging.of(bloodPressurePage.getTotalPages(), pageNumber, size));
     }
 
     public Paged<BloodPressure> findBloodPressuresPaginatedForPatient(int pageNumber, int size, User user) {
         PageRequest request = PageRequest.of(pageNumber - 1, size);
-        Page<BloodPressure> allergiePage = bloodPressureRepository.findAllByPatient(user, request);
-        return new Paged<>(allergiePage, Paging.of(allergiePage.getTotalPages(), pageNumber, size));
+        Page<BloodPressure> bloodPressurePage = bloodPressureRepository.findAllByPatient(user, request);
+        return new Paged<>(bloodPressurePage, Paging.of(bloodPressurePage.getTotalPages(), pageNumber, size));
     }
 
     public Paged<BloodPressure> findBloodPressuresPaginatedAndFilterableForPatient(int pageNumber, int size, User user, String keyword) {
         PageRequest request = PageRequest.of(pageNumber - 1, size);
-        Page<BloodPressure> allergiePage = bloodPressureRepository.findAllByPatientFilterable(user, request, keyword);
-        return new Paged<>(allergiePage, Paging.of(allergiePage.getTotalPages(), pageNumber, size));
+        Page<BloodPressure> bloodPressurePage = bloodPressureRepository.findAllByPatientFilterable(user, request, keyword);
+        return new Paged<>(bloodPressurePage, Paging.of(bloodPressurePage.getTotalPages(), pageNumber, size));
     }
 
     public void addNewBloodPressure(BloodPressureDto bloodPressureDto) {

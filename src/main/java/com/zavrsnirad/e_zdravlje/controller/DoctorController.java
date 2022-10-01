@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -98,5 +99,11 @@ public class DoctorController {
             redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
             return "redirect:/doktori";
         }
+    }
+
+    @RequestMapping(value = "/doktori/json")
+    @ResponseBody
+    public List<User> findAllDoctors() {
+        return userService.findAllDoctors();
     }
 }

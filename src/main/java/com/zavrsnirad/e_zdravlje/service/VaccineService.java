@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,10 +23,6 @@ public class VaccineService {
     public VaccineService(VaccineRepository vaccineRepository, UserRepository userRepository) {
         this.vaccineRepository = vaccineRepository;
         this.userRepository = userRepository;
-    }
-
-    public List<Vaccine> findAllVaccine() {
-        return vaccineRepository.findAll();
     }
 
     public Paged<Vaccine> findVaccinePaginated(int pageNumber, int size) {

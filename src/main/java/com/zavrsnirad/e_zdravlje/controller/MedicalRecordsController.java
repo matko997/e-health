@@ -1,9 +1,6 @@
 package com.zavrsnirad.e_zdravlje.controller;
 
-import com.zavrsnirad.e_zdravlje.dto.AddAllergieDto;
-import com.zavrsnirad.e_zdravlje.dto.AddVaccineDto;
-import com.zavrsnirad.e_zdravlje.dto.BloodPressureDto;
-import com.zavrsnirad.e_zdravlje.dto.DiabetesDto;
+import com.zavrsnirad.e_zdravlje.dto.*;
 import com.zavrsnirad.e_zdravlje.model.*;
 import com.zavrsnirad.e_zdravlje.service.*;
 import org.springframework.security.core.Authentication;
@@ -26,14 +23,16 @@ public class MedicalRecordsController {
     private final AllergieService allergieService;
     private final BloodPressureService bloodPressureService;
     private final DiabetesService diabetesService;
+    private final LabTestService labTestService;
 
 
-    public MedicalRecordsController(VaccineService vaccineService, UserService userService, AllergieService allergieService, BloodPressureService bloodPressureService, DiabetesService diabetesService) {
+    public MedicalRecordsController(VaccineService vaccineService, UserService userService, AllergieService allergieService, BloodPressureService bloodPressureService, DiabetesService diabetesService, LabTestService labTestService) {
         this.vaccineService = vaccineService;
         this.userService = userService;
         this.allergieService = allergieService;
         this.bloodPressureService = bloodPressureService;
         this.diabetesService = diabetesService;
+        this.labTestService = labTestService;
     }
 
     @GetMapping("/cjepiva")
@@ -244,11 +243,13 @@ public class MedicalRecordsController {
             return "redirect:/krvni-tlakovi";
         }
     }
+
     @RequestMapping(value = "/krvni-tlak")
     @ResponseBody
     public Optional<BloodPressure> findOneBloodPressure(long id) {
         return bloodPressureService.getById(id);
     }
+
     @RequestMapping(value = "/krvni-tlak/uredi", method = {RequestMethod.GET, RequestMethod.PUT})
     public String updateDoctor(BloodPressure bloodPressure, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
@@ -263,8 +264,8 @@ public class MedicalRecordsController {
 
     @GetMapping("/dijabetesi")
     public String findAllDiabetesesPaginated(@RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
-                                                 @RequestParam(value = "velicina", required = false, defaultValue = "10") int size,
-                                                 @RequestParam(value = "filter", required = false) String keyword, Model model) {
+                                             @RequestParam(value = "velicina", required = false, defaultValue = "10") int size,
+                                             @RequestParam(value = "filter", required = false) String keyword, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String email = userDetails.getUsername();
@@ -294,7 +295,7 @@ public class MedicalRecordsController {
     public String deleteDiabetes(long id, RedirectAttributes redirectAttributes) {
         try {
             diabetesService.deleteById(id);
-            redirectAttributes.addFlashAttribute("success", "Zapis o krvnom šećeru uspješno obrisan.");
+            redirectAttributes.addFlashAttribute("success", "Zapis o glukozi uspješno obrisan.");
             return "redirect:/dijabetesi";
 
         } catch (Exception e) {
@@ -312,7 +313,7 @@ public class MedicalRecordsController {
             redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
             return "redirect:/dijabetesi";
         }
-        redirectAttributes.addFlashAttribute("success", "Novi zapis o krvnom šećeru uspješno dodan");
+        redirectAttributes.addFlashAttribute("success", "Novi zapis o glukozi uspješno dodan");
 
         return "redirect:/dijabetesi";
     }
@@ -325,7 +326,7 @@ public class MedicalRecordsController {
             return "redirect:/dijabetesi";
         }
         diabetesService.editDiabetes(diabetes);
-        redirectAttributes.addFlashAttribute("success", "Krvni šećer uspješno ažuriran.");
+        redirectAttributes.addFlashAttribute("success", "Glukoza uspješno ažurirana.");
         return "redirect:/dijabetesi";
     }
 
@@ -335,5 +336,84 @@ public class MedicalRecordsController {
         return diabetesService.getById(id);
     }
 
+    @GetMapping("/lab-nalazi")
+    public String findAllLabTestsPaginated(@RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
+                                           @RequestParam(value = "velicina", required = false, defaultValue = "10") int size,
+                                           @RequestParam(value = "filter", required = false) String keyword, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String email = userDetails.getUsername();
+
+        Optional<User> userOptional = userService.findByEmail(email);
+
+        if (Objects.isNull(keyword)) {
+            if (userOptional.get().getRole().getName().equals("DOCTOR") || userOptional.get().getRole().getName().equals("ADMIN")) {
+                model.addAttribute("labTests", labTestService.findLabTestsPaginated(pageNumber, size));
+                return "lab-test-index";
+            } else {
+                model.addAttribute("labTests", labTestService.findLabTestsPaginatedForPatient(pageNumber, size, userOptional.get()));
+                return "lab-test-index";
+            }
+        }
+        if (userOptional.get().getRole().getName().equals("DOCTOR") || userOptional.get().getRole().getName().equals("ADMIN")) {
+            model.addAttribute("labTests", labTestService.findLabTestsPaginatedFilterable(pageNumber, size, keyword));
+            return "lab-test-index";
+        } else {
+            model.addAttribute("labTests", labTestService.findLabTestsPaginatedAndFilterableForPatient(pageNumber, size, userOptional.get(), keyword));
+            return "lab-test-index";
+        }
+    }
+
+    @PostMapping("/lab-nalazi")
+    public String addNewLabTest(AddLabTestDto addLabTestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String email = userDetails.getUsername();
+
+        Optional<User> doctorOptional = userService.findByEmail(email);
+        User doctor = doctorOptional.get();
+
+        labTestService.addLabTest(addLabTestDto, doctor);
+
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/lab-nalazi";
+        }
+        redirectAttributes.addFlashAttribute("success", "Novi labaratorijski nalaz uspješno dodan");
+
+        return "redirect:/lab-nalazi";
+    }
+
+    @RequestMapping(value = "/lab-nalaz")
+    @ResponseBody
+    public Optional<LabTest> findOneLabTest(long id) {
+        return labTestService.findById(id);
+    }
+
+    @RequestMapping(value = "/lab-nalaz/obrisi", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteLabTest(long id, RedirectAttributes redirectAttributes) {
+        try {
+            labTestService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Zapis o labaratorijskom nalazu uspješno obrisan.");
+            return "redirect:/lab-nalazi";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/lab-nalazi";
+        }
+    }
+
+    @RequestMapping(value = "/lab-nalaz/uredi", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String updateLabTest(LabTest labTest, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/lab-nalazi";
+        }
+        labTestService.editLabTest(labTest);
+        redirectAttributes.addFlashAttribute("success", "Labaratorijski nalaz uspješno ažuriran.");
+        return "redirect:/lab-nalazi";
+    }
 
 }

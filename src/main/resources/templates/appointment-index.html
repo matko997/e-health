@@ -1,0 +1,200 @@
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Sastanci</title>
+
+    <script type="text/javascript">
+        $('document').ready(function () {
+            $('.edit-allergie').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+
+                $.get(href, function (allergie) {
+                    $('#idAllergieEdit').val(allergie.id);
+                    $('#allergieNameEdit').val(allergie.name);
+                });
+
+                $('#editAllergieModal').modal('show');
+            });
+
+            $('.addAppointment').on('click', function (event) {
+                event.preventDefault();
+                const patientsUrl = '/pacijenti/json';
+                const doctorsUrl = '/doktori/json';
+
+                $.get(patientsUrl, function (patients) {
+                    var s = '<option value="">Odaberite pacijenta</option>';
+                    for (var i = 0; i < patients.length; i++) {
+                        s += '<option id="patientId" name="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
+                    }
+                    $("#patients-appointments-dropdown").html(s);
+                })
+                $.get(doctorsUrl, function (doctors) {
+                    var s = '<option value="">Odaberite doktora</option>';
+                    for (var i = 0; i < doctors.length; i++) {
+                        s += '<option id="doctorId" name="doctorId" value="' + doctors[i].id + '">' + doctors[i].firstName + ' ' + doctors[i].lastName + '</option>';
+                    }
+                    $("#doctors-appointments-dropdown").html(s);
+                })
+
+
+            })
+
+            $('.delete-allergie').on('click', function (event) {
+                event.preventDefault();
+
+                const href = $(this).attr('href');
+                $('#deleteAllergieModal #delHref').attr('href', href);
+                $('#deleteAllergieModal').modal('show');
+
+            })
+
+
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="row mt-4">
+        <div sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" class="col-md-3 pe-0" style="width: 200px">
+            <button type="button" class="btn btn-primary addAppointment" style="width: 12rem" data-bs-toggle="modal"
+                    data-bs-target="#addAppointmentModal">Dodaj
+            </button>
+        </div>
+        <div class="col-md-4 ">
+            <form method="get" th:action="@{/alergije}">
+                <div class="input-group">
+                    <label for="keyword-search"></label><input
+                        class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
+                        id="keyword-search" name="filter">
+                    <span class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                                        type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addAppointmentModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <form method="post" th:action="@{/sastanci}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Novi sastanak</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="mb-3 form-group">
+                            <select class="form-select"  name="patientId" id="patients-appointments-dropdown"
+                                    aria-label="Default select example" required>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <select class="form-select" name="doctorId" id="doctors-appointments-dropdown"
+                                    aria-label="Default select example" required>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="reason" class="col-form-label"></label>
+                            <textarea id="reason" placeholder="Upišite razlog sastanka..." name="reason" rows="4" cols="45"></textarea>
+                        </div>
+
+                        <div class="mb-3 form-group">
+                            <label for="datetime" class="col-form-label"></label>
+                            <input placeholder="Datum sastanka" type="datetime-local" class="form-control" id="datetime"
+                                   name="date">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="submit" class="btn btn-primary">Rezerviraj</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md">
+            <div class="table-responsive-md">
+                <table class="table rounded rounded-3 overflow-hidden">
+                    <thead>
+                    <tr>
+                        <th scope="col">Doktor</th>
+                        <th scope="col">Pacijent</th>
+                        <th scope="col">Datum sastanka</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appointment : ${appointments.page}">
+                        <td th:text="${appointment.doctor.firstName+' '+ appointment.doctor.lastName}"></td>
+                        <td th:text="${appointment.patient.firstName+' '+ appointment.patient.lastName}"></td>
+                        <td th:text="${#temporals.format(appointment.date,'dd-MM-yyyy HH:mm')}"></td>
+                        <td>
+                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                               th:href="@{/sastanci(id=${appointment.id})}"
+                               class="btn btn-warning edit-appointment"
+                               style="font-size: 12px"><i
+                                    class="fas fa-user-edit"></i></a>
+                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                               th:href="@{/sastanak/obrisi(id=${appointment.id})}"
+                               class="btn btn-danger delete-appointment"
+                               style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation" class="paging">
+                    <ul class="pagination" th:if="${appointments.page.totalPages > 1}">
+                        <li class="page-item"
+                            th:classappend="${!appointments.paging.isPrevEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/sastanci?stranica=' + ${appointments.paging.pageNumber - 1}}"
+                               tabindex="-1">Prethodna</a>
+                        </li>
+                        <th:block th:each="item : ${appointments.paging.getItems()}">
+                            <li class="page-item"
+                                th:classappend="${item.index == appointments.paging.pageNumber? 'active' : ''}"
+                                th:if="${item.pageItemType.name() == 'PAGE'}">
+                                <a class="page-link"
+                                   th:href="@{'/sastanci?stranica=' + ${item.index}}"
+                                   th:text="${item.index}"></a>
+                            </li>
+                            <li class="page-item disabled"
+                                th:if="${item.pageItemType.name() == 'DOTS'}">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                        </th:block>
+                        <li class="page-item"
+                            th:classappend="${!appointments.paging.isNextEnabled()? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{'/sastanci?stranica=' + ${appointments.paging.pageNumber + 1}}">Sljedeća</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="alert alert-primary" role="alert" th:text="${success}"
+                     th:if="${success}"></div>
+                <div class="alert alert-danger" role="alert" th:text="${error}"
+                     th:if="${error}"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

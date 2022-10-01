@@ -30,9 +30,4 @@ public class HomeController {
         model.addAttribute("userRegisterDto", new UserRegisterDto());
         return "/register";
     }
-
-    @GetMapping("/sastanci")
-    public String showAppointments() {
-        return "my-appointments";
-    }
 }

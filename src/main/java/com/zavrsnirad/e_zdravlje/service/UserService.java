@@ -152,4 +152,7 @@ public class UserService {
         return userRepository.findAllByRoleName("PATIENT");
     }
 
+    public List<User> findAllDoctors() {
+        return userRepository.findAllByRoleName("DOCTOR");
+    }
 }

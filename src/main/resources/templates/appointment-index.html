@@ -8,18 +8,22 @@
 
     <script type="text/javascript">
         $('document').ready(function () {
-            $('.edit-allergie').on('click', function (event) {
+            $('.show-appointment').on('click', function (event) {
                 event.preventDefault();
 
                 const href = $(this).attr('href');
 
-                $.get(href, function (allergie) {
-                    $('#idAllergieEdit').val(allergie.id);
-                    $('#allergieNameEdit').val(allergie.name);
+                $.get(href, function (appointment) {
+                    $('#showAppointmentDoctor').text(appointment.doctor.firstName + ' ' + appointment.doctor.lastName);
+                    $('#showAppointmentPatient').text(appointment.patient.firstName + ' ' + appointment.patient.lastName);
+                    $('#showAppointmentDate').text(appointment.date);
+                    $('#showAppointmentReason').text(appointment.reason);
                 });
 
-                $('#editAllergieModal').modal('show');
-            });
+                $('#appointment-info-modal').modal('show');
+
+            })
+
 
             $('.addAppointment').on('click', function (event) {
                 event.preventDefault();
@@ -44,12 +48,12 @@
 
             })
 
-            $('.delete-allergie').on('click', function (event) {
+            $('.delete-appointment').on('click', function (event) {
                 event.preventDefault();
 
                 const href = $(this).attr('href');
-                $('#deleteAllergieModal #delHref').attr('href', href);
-                $('#deleteAllergieModal').modal('show');
+                $('#deleteAppointmentModal #delHref').attr('href', href);
+                $('#deleteAppointmentModal').modal('show');
 
             })
 
@@ -60,13 +64,13 @@
 <body>
 <div layout:fragment="content" class="container">
     <div class="row mt-4">
-        <div sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" class="col-md-3 pe-0" style="width: 200px">
+        <div sec:authorize="hasAuthority('DOCTOR')" class="col-md-3 pe-0" style="width: 200px">
             <button type="button" class="btn btn-primary addAppointment" style="width: 12rem" data-bs-toggle="modal"
                     data-bs-target="#addAppointmentModal">Dodaj
             </button>
         </div>
         <div class="col-md-4 ">
-            <form method="get" th:action="@{/alergije}">
+            <form method="get" th:action="@{/sastanci}">
                 <div class="input-group">
                     <label for="keyword-search"></label><input
                         class="form-control border-end-0 border rounded-pill" type="search" placeholder="pretraži"
@@ -94,7 +98,7 @@
                     <div class="modal-body">
 
                         <div class="mb-3 form-group">
-                            <select class="form-select"  name="patientId" id="patients-appointments-dropdown"
+                            <select class="form-select" name="patientId" id="patients-appointments-dropdown"
                                     aria-label="Default select example" required>
                             </select>
                         </div>
@@ -107,11 +111,12 @@
 
                         <div class="mb-3 form-group">
                             <label for="reason" class="col-form-label"></label>
-                            <textarea id="reason" placeholder="Upišite razlog sastanka..." name="reason" rows="4" cols="45"></textarea>
+                            <textarea id="reason" placeholder="Upišite razlog sastanka..." name="reason" rows="4"
+                                      cols="40"></textarea>
                         </div>
 
                         <div class="mb-3 form-group">
-                            <label for="datetime" class="col-form-label"></label>
+                            <label for="datetime" class="form-label">Odaberite datum i vrijeme</label>
                             <input placeholder="Datum sastanka" type="datetime-local" class="form-control" id="datetime"
                                    name="date">
                         </div>
@@ -128,6 +133,88 @@
         </form>
     </div>
 
+    <div class="modal" tabindex="-1" id="deleteAppointmentModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Obriši zapis o sastanku</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Jeste li sigurni da želite obrisati ovaj zapis?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne</button>
+                    <a href="" type="button" class="btn btn-danger" id="delHref">Da, obriši</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="appointment-info-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detalji o sastanku</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container rounded bg-white mt-5 mb-5">
+                        <div class="col-lg">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Doktor</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0" id="showAppointmentDoctor"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Pacijent</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0" id="showAppointmentPatient"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Datum</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0" id="showAppointmentDate"></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mt-3">Razlog</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" id="showAppointmentReason"></textarea>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row mt-5">
         <div class="col-md">
             <div class="table-responsive-md">
@@ -137,6 +224,7 @@
                         <th scope="col">Doktor</th>
                         <th scope="col">Pacijent</th>
                         <th scope="col">Datum sastanka</th>
+                        <th scope="col">Status</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -145,16 +233,25 @@
                         <td th:text="${appointment.doctor.firstName+' '+ appointment.doctor.lastName}"></td>
                         <td th:text="${appointment.patient.firstName+' '+ appointment.patient.lastName}"></td>
                         <td th:text="${#temporals.format(appointment.date,'dd-MM-yyyy HH:mm')}"></td>
+                        <td th:if="${appointment.approved}"><a class="btn btn-primary"
+                                                               style="pointer-events: none; cursor: default; width: 7rem;">Odobren</a>
+                        </td>
+                        <td th:if="!${appointment.approved}"><a class="btn btn-secondary"
+                                                                style="pointer-events: none; cursor: default; width: 7rem;">Na
+                            čekanju</a></td>
                         <td>
                             <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
-                               th:href="@{/sastanci(id=${appointment.id})}"
-                               class="btn btn-warning edit-appointment"
-                               style="font-size: 12px"><i
-                                    class="fas fa-user-edit"></i></a>
+                               th:href="@{/sastanak(id=${appointment.id})}"
+                               class="btn btn-success show-appointment"
+                               style="font-size: 12px"><i class="fa-solid fa-circle-info"></i></a>
                             <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
                                th:href="@{/sastanak/obrisi(id=${appointment.id})}"
                                class="btn btn-danger delete-appointment"
                                style="font-size: 12px"><i class="fas fa-user-times"></i></a>
+                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                               th:href="@{/sastanak/odobri(id=${appointment.id})}"
+                               class="btn btn-info"
+                               style="font-size: 12px"><i class="fa-solid fa-thumbs-up"></i></a>
                         </td>
                     </tr>
                     </tbody>

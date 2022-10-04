@@ -12,12 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    public WebSecurityConfig(CustomAuthenticationFailureHandler customAuthenticationFailureHandler, CustomUserDetailsService customUserDetailsService) {
-        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -39,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/odjava")
                 .logoutSuccessUrl("/index")
                 .permitAll()
-                .and().csrf().disable(); // we'll enable this in a later blog post
+                .and().csrf().disable();
     }
 
     @Override

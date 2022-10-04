@@ -33,7 +33,7 @@
                 const url = '/pacijenti/json';
 
                 $.get(url, function (patients) {
-                    var s = '<option value="-1">Odaberite pacijenta</option>';
+                    var s = '<option value="">Odaberite pacijenta</option>';
                     for (var i = 0; i < patients.length; i++) {
                         s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
                     }
@@ -166,54 +166,54 @@
                             <label for="urea" class="col-form-label">Urea</label>
                             <input placeholder="mmol/L" type="number" min="1" max="30" step="0.1" class="form-control"
                                    id="urea" name="urea"
-                                   required>
+                                   >
                         </div>
                         <div class="mb-3 form-group">
                             <label for="glucose" class="col-form-label">Glukoza</label>
                             <input placeholder="mmol/L" type="number" min="1" max="50" step="0.1" class="form-control"
                                    id="glucose" name="glucose"
-                                   required>
+                                   >
                         </div>
 
                         <div class="mb-3 form-group">
                             <label for="creatinine" class="col-form-label">Kreatinin</label>
                             <input placeholder="μmmol/L" type="number" min="5" max="300" step="1" class="form-control"
                                    id="creatinine" name="creatinine"
-                                   required>
+                                   >
                         </div>
 
                         <div class="mb-3 form-group">
                             <label for="cholesterol" class="col-form-label">Kolesterol</label>
                             <input placeholder="mmol/L" type="number" min="1" max="50" step="0.1" class="form-control"
                                    id="cholesterol" name="cholesterol"
-                                   required>
+                                   >
                         </div>
 
                         <div class="mb-3 form-group">
                             <label for="hemoglobin" class="col-form-label">Hemoglobin</label>
                             <input placeholder="g/L" type="number" min="10" max="300" step="1" class="form-control"
                                    id="hemoglobin" name="hemoglobin"
-                                   required>
+                                   >
                         </div>
 
                         <div class="mb-3 form-group">
                             <label for="triglyceride" class="col-form-label">Trigliceridi</label>
                             <input placeholder="mmol/L" type="number" min="0" max="10" step="0.1" class="form-control"
                                    id="triglyceride" name="triglyceride"
-                                   required>
+                                   >
                         </div>
 
                         <div class="mb-3 form-group">
                             <label for="triglyceride" class="col-form-label">ALP</label>
                             <input placeholder="U/L" type="number" min="0" max="300" step="1" class="form-control"
                                    id="ALP" name="ALP"
-                                   required>
+                                   >
                         </div>
 
                         <div class="mb-3 form-group">
                             <label for="creatinine" class="col-form-label"></label>
                             <select class="form-select" name="patientId" id="patients-lab-test-dropdown"
-                                    aria-label="Default select example">
+                                    aria-label="Default select example" required>
                             </select>
                         </div>
 

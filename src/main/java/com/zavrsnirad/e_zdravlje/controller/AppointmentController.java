@@ -1,6 +1,8 @@
 package com.zavrsnirad.e_zdravlje.controller;
 
 import com.zavrsnirad.e_zdravlje.dto.AddAppointmentDto;
+import com.zavrsnirad.e_zdravlje.model.Appointment;
+import com.zavrsnirad.e_zdravlje.model.LabTest;
 import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.service.AppointmentService;
 import com.zavrsnirad.e_zdravlje.service.UserService;
@@ -10,9 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
@@ -70,5 +70,38 @@ public class AppointmentController {
         redirectAttributes.addFlashAttribute("success", "Novi sastanak uspješno rezerviran");
 
         return "redirect:/sastanci";
+    }
+
+    @RequestMapping(value = "/sastanak/obrisi", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteAppointment(long id, RedirectAttributes redirectAttributes) {
+        try {
+            appointmentService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Zapis o sastanku uspješno obrisan.");
+            return "redirect:/sastanci";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/sastanci";
+        }
+    }
+
+    @RequestMapping(value = "/sastanak/odobri", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String approveAppointment(long id, RedirectAttributes redirectAttributes) {
+        try {
+            appointmentService.approveAppointment(id);
+            redirectAttributes.addFlashAttribute("success", "Sastanak uspješno odobren.");
+            return "redirect:/sastanci";
+        } catch (UnsupportedOperationException e) {
+            redirectAttributes.addFlashAttribute("error", "Sastanak je već odobren.");
+            return "redirect:/sastanci";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+            return "redirect:/sastanci";
+        }
+    }
+    @RequestMapping(value = "/sastanak")
+    @ResponseBody
+    public Optional<Appointment> findOneById(long id) {
+        return appointmentService.findById(id);
     }
 }

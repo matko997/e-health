@@ -29,7 +29,7 @@
         const url = '/pacijenti/json';
 
         $.get(url, function (patients) {
-          var s = '<option value="-1">Odaberite pacijenta</option>';
+          var s = '<option value="">Odaberite pacijenta</option>';
           for (var i = 0; i < patients.length; i++) {
             s += '<option id="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
           }
@@ -108,7 +108,7 @@
             <div class="mb-3 form-group">
               <label></label>
               <select class="form-select" name="patientId" id="patients-blood-pressure-dropdown"
-                      aria-label="Default select example">
+                      aria-label="Default select example" required>
               </select>
             </div>
 

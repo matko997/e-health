@@ -4,6 +4,7 @@ import com.zavrsnirad.e_zdravlje.dto.AddAppointmentDto;
 import com.zavrsnirad.e_zdravlje.dto.Paged;
 import com.zavrsnirad.e_zdravlje.dto.Paging;
 import com.zavrsnirad.e_zdravlje.model.Appointment;
+import com.zavrsnirad.e_zdravlje.model.LabTest;
 import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.repository.AppointmentRepository;
 import com.zavrsnirad.e_zdravlje.repository.UserRepository;
@@ -63,5 +64,22 @@ public class AppointmentService {
         ZoneId zone = ZoneId.of("Europe/Zagreb");
         appointment.setCreatedAt(LocalDateTime.now(zone));
         appointmentRepository.save(appointment);
+    }
+
+    public void deleteById(long id) {
+        appointmentRepository.deleteById(id);
+    }
+
+    public void approveAppointment(long id) {
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(id);
+        if (Boolean.TRUE.equals(appointmentOptional.get().getApproved())) {
+            throw new UnsupportedOperationException("Appointment already approved");
+        }
+        appointmentOptional.get().setApproved(true);
+        appointmentRepository.save(appointmentOptional.get());
+    }
+
+    public Optional<Appointment> findById(long id) {
+        return appointmentRepository.findById(id);
     }
 }

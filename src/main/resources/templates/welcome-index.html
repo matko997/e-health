@@ -16,7 +16,7 @@
                 if (allStats.appointmentStats.numOfAppointmentsPreviousMonth === 0) {
                     appointmentStatPercentage = '∞%';
                 } else {
-                    let unroundedValue = (Math.abs(allStats.appointmentStats.numOfAppointmentsPreviousMonth - allStats.appointmentStats.numOfAppointmentsThisMonth) / allStats.appointmentStats.numOfAppointmentsPreviousMonth)*100;
+                    let unroundedValue = (Math.abs(allStats.appointmentStats.numOfAppointmentsPreviousMonth - allStats.appointmentStats.numOfAppointmentsThisMonth) / allStats.appointmentStats.numOfAppointmentsPreviousMonth) * 100;
                     appointmentStatPercentage = Math.round(unroundedValue * 100) / 100;
                     appointmentStatPercentage += '%';
                 }
@@ -40,6 +40,55 @@
 
         });
     </script>
+
+<!--    OVAJ KOMENTIRANI DIO MOZES ISKORISTIT ZA TEST-->
+<!--    <script>-->
+<!--        $('document').ready(function () {-->
+<!--            const allStats = [-->
+<!--                {-->
+<!--                    "allergiesStats": {-->
+<!--                        "numOfAllergiesPreviousMonth": 0,-->
+<!--                        "numOfAllergiesThisMonth": 967,-->
+<!--                        "numOfTotalAllergies": 1000-->
+<!--                    },-->
+<!--                    "appointmentStats": {-->
+<!--                        "numOfAppointmentsPreviousMonth": 5,-->
+<!--                        "numOfAppointmentsThisMonth": 3,-->
+<!--                        "numOfTotalAppointments": 8-->
+<!--                    },-->
+<!--                    "bloodPressureStats": {-->
+<!--                        "numOfBloodPressuresPreviousMonth": 0,-->
+<!--                        "numOfBloodPressuresThisMonth": 1,-->
+<!--                        "numOfTotalBloodPressures": 1-->
+<!--                    },-->
+<!--                    "doctorsStats": {-->
+<!--                        "numOfDoctorsPreviousMonth": 0,-->
+<!--                        "numOfDoctorsThisMonth": 0,-->
+<!--                        "numOfTotalDoctors": 2-->
+<!--                    },-->
+<!--                    "patientStats": {-->
+<!--                        "numOfPatientsPreviousMonth": 0,-->
+<!--                        "numOfPatientsThisMonth": 8,-->
+<!--                        "numOfTotalPatients": 8-->
+<!--                    },-->
+<!--                    "labTestsStats": {-->
+<!--                        "numOfLabTestsPreviousMonth": 0,-->
+<!--                        "numOfLabTestsThisMonth": 1,-->
+<!--                        "numOfTotalLabTests": 1-->
+<!--                    },-->
+<!--                    "vaccineStats": {-->
+<!--                        "numOfVaccinesPreviousMonth": 0,-->
+<!--                        "numOfVaccinesThisMonth": 1,-->
+<!--                        "numOfTotalVaccines": 1-->
+<!--                    },-->
+<!--                    "diabetesStats": {-->
+<!--                        "numOfDiabetesPreviousMonth": 0,-->
+<!--                        "numOfDiabetesThisMonth": 1,-->
+<!--                        "numOfTotalDiabetes": 1-->
+<!--                    }-->
+<!--                }]-->
+<!--        });-->
+<!--    </script>-->
 </head>
 <body>
 

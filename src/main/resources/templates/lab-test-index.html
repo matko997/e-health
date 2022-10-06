@@ -374,7 +374,7 @@
                         <td th:text="${labTest.patient.firstName+' '+ labTest.patient.lastName}"></td>
                         <td th:text="${#temporals.format(labTest.createdAt,'dd-MM-yyyy HH:mm')}"></td>
                         <td>
-                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                            <a
                                th:href="@{/lab-nalaz(id=${labTest.id})}"
                                class="btn btn-success show-lab-test" style="font-size: 12px;"><i
                                     class="fa-solid fa-user"></i></a>

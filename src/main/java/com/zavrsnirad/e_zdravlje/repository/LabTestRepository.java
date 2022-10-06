@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+
 public interface LabTestRepository extends JpaRepository<LabTest, Long> {
     Page<LabTest> findAllByPatient(User patient, Pageable pageable);
 
@@ -20,4 +22,7 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
             " (lb.id=:keyword OR lb.doctor.firstName " +
             "LIKE %:keyword% OR lb.patient.firstName LIKE %:keyword% OR lb.createdAt= :keyword) ")
     Page<LabTest> findAllByPatientFilterable(@Param("patient") User user, Pageable pageable, @Param("keyword") String keyword);
+
+    @Query("SELECT COUNT(lt) FROM LabTest lt WHERE lt.createdAt BETWEEN :startDate AND :endDate")
+    long getCountOfLabTestsBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

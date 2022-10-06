@@ -27,16 +27,8 @@
 
             $('.addAppointment').on('click', function (event) {
                 event.preventDefault();
-                const patientsUrl = '/pacijenti/json';
                 const doctorsUrl = '/doktori/json';
 
-                $.get(patientsUrl, function (patients) {
-                    var s = '<option value="">Odaberite pacijenta</option>';
-                    for (var i = 0; i < patients.length; i++) {
-                        s += '<option id="patientId" name="patientId" value="' + patients[i].id + '">' + patients[i].firstName + ' ' + patients[i].lastName + '</option>';
-                    }
-                    $("#patients-appointments-dropdown").html(s);
-                })
                 $.get(doctorsUrl, function (doctors) {
                     var s = '<option value="">Odaberite doktora</option>';
                     for (var i = 0; i < doctors.length; i++) {
@@ -64,7 +56,7 @@
 <body>
 <div layout:fragment="content" class="container">
     <div class="row mt-4">
-        <div sec:authorize="hasAuthority('DOCTOR')" class="col-md-3 pe-0" style="width: 200px">
+        <div sec:authorize="hasAuthority('PATIENT')" class="col-md-3 pe-0" style="width: 200px">
             <button type="button" class="btn btn-primary addAppointment" style="width: 12rem" data-bs-toggle="modal"
                     data-bs-target="#addAppointmentModal">Dodaj
             </button>
@@ -97,11 +89,6 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="mb-3 form-group">
-                            <select class="form-select" name="patientId" id="patients-appointments-dropdown"
-                                    aria-label="Default select example" required>
-                            </select>
-                        </div>
 
                         <div class="mb-3 form-group">
                             <select class="form-select" name="doctorId" id="doctors-appointments-dropdown"
@@ -233,14 +220,14 @@
                         <td th:text="${appointment.doctor.firstName+' '+ appointment.doctor.lastName}"></td>
                         <td th:text="${appointment.patient.firstName+' '+ appointment.patient.lastName}"></td>
                         <td th:text="${#temporals.format(appointment.date,'dd-MM-yyyy HH:mm')}"></td>
-                        <td th:if="${appointment.approved}"><a class="btn btn-primary"
-                                                               style="pointer-events: none; cursor: default; width: 7rem;">Odobren</a>
+                        <td th:if="${appointment.approved}"><a class="btn btn-sm btn-primary"
+                                                               style="pointer-events: none; cursor: default; width: 6rem; height: 33px; ">Potvrđen</a>
                         </td>
-                        <td th:if="!${appointment.approved}"><a class="btn btn-secondary"
+                        <td th:if="!${appointment.approved}"><a class="btn btn-sm btn-secondary"
                                                                 style="pointer-events: none; cursor: default; width: 7rem;">Na
                             čekanju</a></td>
                         <td>
-                            <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
+                            <a
                                th:href="@{/sastanak(id=${appointment.id})}"
                                class="btn btn-success show-appointment"
                                style="font-size: 12px"><i class="fa-solid fa-circle-info"></i></a>
@@ -250,8 +237,8 @@
                                style="font-size: 12px"><i class="fas fa-user-times"></i></a>
                             <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
                                th:href="@{/sastanak/odobri(id=${appointment.id})}"
-                               class="btn btn-info"
-                               style="font-size: 12px"><i class="fa-solid fa-thumbs-up"></i></a>
+                               class="btn"
+                               style="font-size: 12px;background-color: #0844ad"><i class="fa-solid fa-circle-check" style="color: white"></i></a>
                         </td>
                     </tr>
                     </tbody>

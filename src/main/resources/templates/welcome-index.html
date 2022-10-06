@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Naslovnica</title>
+
+    <script type="text/javascript">
+        $('document').ready(function () {
+
+            $.get("/statistika", function (allStats) {
+                $('#numOfAppointments').text(allStats.appointmentStats.numOfTotalAppointments);
+                let appointmentStatPercentage;
+                if (allStats.appointmentStats.numOfAppointmentsPreviousMonth === 0) {
+                    appointmentStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.appointmentStats.numOfAppointmentsPreviousMonth - allStats.appointmentStats.numOfAppointmentsThisMonth) / allStats.appointmentStats.numOfAppointmentsPreviousMonth)*100;
+                    appointmentStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    appointmentStatPercentage += '%';
+                }
+
+                if (allStats.appointmentStats.numOfAppointmentsThisMonth < allStats.appointmentStats.numOfAppointmentsPreviousMonth) {
+                    $('#appointmentPercentageSpan').text(appointmentStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#appointmentPercentageSpan').text(appointmentStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#appointmentStatPercentage').text(allStats.appointmentStats.numOfTotalAppointments);
+
+                //DOKTORI
+                //...
+                //...
+
+                //PACIJENTI
+                //..
+                //..
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content" class="container">
+
+    <div class="header-body">
+        <div class="row d-flex aligns-items-center justify-content-center mt-5">
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">DOKTOR</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">PACIJENT</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-hospital-user"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">LAB-NALAZI</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-vial"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-body">
+        <div class="row d-flex aligns-items-center justify-content-center mt-5">
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">DOKTOR</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">PACIJENT</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-hospital-user"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2" id="appointmentStatPercentage"><i
+                                    class="fa fa-arrow-up"></i></span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">SASTANAK</h5>
+                                <span class="h2 font-weight-bold mb-2" id="numOfAppointments"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-vial"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span id="appointmentPercentageSpan"></span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-body">
+        <div class="row d-flex aligns-items-center justify-content-center mt-5">
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">DOKTOR</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">PACIJENT</h5>
+                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-hospital-user"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                            <span class="text-nowrap">Since last month</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

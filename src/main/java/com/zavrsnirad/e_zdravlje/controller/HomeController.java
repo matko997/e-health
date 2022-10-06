@@ -22,7 +22,7 @@ public class HomeController {
 
     @GetMapping("/naslovnica")
     public String showDashboard() {
-        return "layout";
+        return "welcome-index";
     }
 
     @GetMapping("/registracija")

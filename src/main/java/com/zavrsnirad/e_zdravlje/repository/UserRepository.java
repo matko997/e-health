@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,4 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u INNER JOIN u.role WHERE u.role.name LIKE :roleName")
     List<User> findAllByRoleName(@Param("roleName") String roleName);
 
+    @Query("SELECT COUNT(u) FROM User u INNER JOIN u.role WHERE u.role.name LIKE :role AND u.createdAt BETWEEN :startDate AND :endDate")
+    long getCountOfUserByRoleBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("role") String role);
+
+    @Query("SELECT COUNT(u) FROM User u INNER JOIN u.role WHERE u.role.name LIKE :role")
+    long getCountOfDoctors(@Param("role") String role);
 }

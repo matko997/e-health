@@ -4,7 +4,6 @@ import com.zavrsnirad.e_zdravlje.dto.AddAppointmentDto;
 import com.zavrsnirad.e_zdravlje.dto.Paged;
 import com.zavrsnirad.e_zdravlje.dto.Paging;
 import com.zavrsnirad.e_zdravlje.model.Appointment;
-import com.zavrsnirad.e_zdravlje.model.LabTest;
 import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.repository.AppointmentRepository;
 import com.zavrsnirad.e_zdravlje.repository.UserRepository;
@@ -51,15 +50,14 @@ public class AppointmentService {
         return new Paged<>(appointmentPage, Paging.of(appointmentPage.getTotalPages(), pageNumber, size));
     }
 
-    public void addAppointment(AddAppointmentDto addAppointmentDto) {
-        Optional<User> optionalPatient = userRepository.findById(addAppointmentDto.getPatientId());
+    public void addAppointment(AddAppointmentDto addAppointmentDto, User patient) {
         Optional<User> optionalDoctor = userRepository.findById(addAppointmentDto.getDoctorId());
 
         Appointment appointment = new Appointment();
 
         appointment.setDate(addAppointmentDto.getDate());
         appointment.setDoctor(optionalDoctor.get());
-        appointment.setPatient(optionalPatient.get());
+        appointment.setPatient(patient);
         appointment.setReason(addAppointmentDto.getReason());
         ZoneId zone = ZoneId.of("Europe/Zagreb");
         appointment.setCreatedAt(LocalDateTime.now(zone));

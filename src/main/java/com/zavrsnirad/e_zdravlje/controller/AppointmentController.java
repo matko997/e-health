@@ -2,7 +2,6 @@ package com.zavrsnirad.e_zdravlje.controller;
 
 import com.zavrsnirad.e_zdravlje.dto.AddAppointmentDto;
 import com.zavrsnirad.e_zdravlje.model.Appointment;
-import com.zavrsnirad.e_zdravlje.model.LabTest;
 import com.zavrsnirad.e_zdravlje.model.User;
 import com.zavrsnirad.e_zdravlje.service.AppointmentService;
 import com.zavrsnirad.e_zdravlje.service.UserService;
@@ -59,9 +58,14 @@ public class AppointmentController {
 
     @PostMapping("/sastanci")
     public String addNewLabTest(AddAppointmentDto addAppointmentDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String email = userDetails.getUsername();
 
+        Optional<User> optionalUser = userService.findByEmail(email);
+        User patient = optionalUser.get();
 
-        appointmentService.addAppointment(addAppointmentDto);
+        appointmentService.addAppointment(addAppointmentDto, patient);
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");

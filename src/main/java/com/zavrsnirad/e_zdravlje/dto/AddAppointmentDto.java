@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AddAppointmentDto {
     private long doctorId;
-    private long patientId;
     private String reason;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;

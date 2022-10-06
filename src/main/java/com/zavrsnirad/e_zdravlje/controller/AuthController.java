@@ -45,7 +45,7 @@ public class AuthController {
         }
 
         userService.registerNewPatient(userRegisterDto);
-        return "redirect:/naslovnica";
+        return "redirect:/welcome-index";
     }
 
     @GetMapping("/prijava")

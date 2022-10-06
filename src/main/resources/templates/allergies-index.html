@@ -178,7 +178,7 @@
               <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')" th:href="@{/alergija(id=${allergie.id})}"
                  class="btn btn-warning edit-allergie"
                  style="font-size: 12px"><i
-                      class="fas fa-user-edit"></i></a>
+                      class="fas fa-user-edit" ></i></a>
               <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
                  th:href="@{/alergija/obrisi(id=${allergie.id})}"
                  class="btn btn-danger delete-allergie"

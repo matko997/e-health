@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Naslovnica</title>
+    <link href="/stat-card.css" rel="stylesheet">
 
     <script type="text/javascript">
         $('document').ready(function () {
@@ -29,203 +30,227 @@
                 }
                 $('#appointmentStatPercentage').text(allStats.appointmentStats.numOfTotalAppointments);
 
-                //DOKTORI
-                //...
-                //...
+                $('#numOfDoctors').text(allStats.doctorsStats.numOfTotalDoctors);
+                let doctorStatPercentage;
+                if (allStats.doctorsStats.numOfDoctorsPreviousMonth === 0) {
+                    doctorStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.doctorsStats.numOfDoctorsPreviousMonth - allStats.doctorsStats.numOfDoctorsPreviousMonth) / allStats.doctorsStats.numOfDoctorsPreviousMonth) * 100;
+                    doctorStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    doctorStatPercentage += '%';
+                }
 
-                //PACIJENTI
-                //..
-                //..
+                if (allStats.doctorsStats.numOfDoctorsThisMont < allStats.doctorsStats.numOfDoctorsPreviousMonth) {
+                    $('#doctorPercentageSpan').text(doctorStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#doctorPercentageSpan').text(doctorStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#doctorStatPercentage').text(allStats.doctorsStats.numOfTotalDoctors);
+
+
+
+                $('#numOfPatients').text(allStats.patientStats.numOfTotalPatients);
+                let patientStatPercentage;
+                if (allStats.patientStats.numOfPatientsPreviousMonth === 0) {
+                    patientStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.patientStats.numOfPatientsPreviousMonth - allStats.patientStats.numOfPatientsThisMonth) / allStats.patientStats.numOfPatientsPreviousMonth) * 100;
+                    patientStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    patientStatPercentage += '%';
+                }
+
+                if (allStats.patientStats.numOfPatientsThisMonth < allStats.patientStats.numOfPatientsPreviousMonth) {
+                    $('#patientPercentageSpan').text(patientStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#patientPercentageSpan').text(patientStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#patientStatPercentage').text(allStats.patientStats.numOfTotalPatients);
+
+
+                $('#numOfLabTests').text(allStats.labTestsStats.numOfTotalLabTests);
+                let labTestStatPercentage;
+                if (allStats.labTestsStats.numOfLabTestsPreviousMonth === 0) {
+                    labTestStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.labTestsStats.numOfLabTestsPreviousMonth - allStats.labTestsStats.numOfLabTestsThisMonth) / allStats.labTestsStats.numOfLabTestsPreviousMonth) * 100;
+                    labTestStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    labTestStatPercentage += '%';
+                }
+
+                if (allStats.labTestsStats.numOfLabTestsThisMonth < allStats.labTestsStats.numOfLabTestsPreviousMonth) {
+                    $('#labTestPercentageSpan').text(labTestStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#labTestPercentageSpan').text(labTestStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#labTestStatPercentage').text(allStats.labTestsStats.numOfTotalLabTests);
+
+
+
+
+                $('#numOfVaccines').text(allStats.vaccineStats.numOfTotalVaccines);
+                let vaccineStatPercentage;
+                if (allStats.vaccineStats.numOfVaccinesPreviousMonth === 0) {
+                    vaccineStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.vaccineStats.numOfVaccinesPreviousMonth - allStats.vaccineStats.numOfVaccinesThisMonth) / allStats.vaccineStats.numOfVaccinesPreviousMonth) * 100;
+                    vaccineStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    vaccineStatPercentage += '%';
+                }
+
+                if (allStats.vaccineStats.numOfVaccinesThisMonth < allStats.vaccineStats.numOfVaccinesPreviousMonth) {
+                    $('#vaccinePercentageSpan').text(vaccineStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#vaccinePercentageSpan').text(vaccineStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#vaccineStatPercentage').text(allStats.vaccineStats.numOfTotalVaccines);
+
+
+                $('#numOfAllergies').text(allStats.allergiesStats.numOfTotalAllergies);
+                let allergieStatPercentage;
+                if (allStats.allergiesStats.numOfAllergiesPreviousMonth === 0) {
+                    allergieStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.allergiesStats.numOfAllergiesPreviousMonth - allStats.allergiesStats.numOfAllergiesThisMonth) / allStats.allergiesStats.numOfAllergiesPreviousMonth) * 100;
+                    allergieStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    allergieStatPercentage += '%';
+                }
+
+                if (allStats.allergiesStats.numOfAllergiesThisMonth < allStats.allergiesStats.numOfAllergiesPreviousMonth) {
+                    $('#allergiePercentageSpan').text(allergieStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#allergiePercentageSpan').text(allergieStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#allergieStatPercentage').text(allStats.allergiesStats.numOfTotalAllergies);
+
+
+                $('#numOfBloodPressures').text(allStats.bloodPressureStats.numOfTotalBloodPressures);
+                let bloodPressureStatPercentage;
+                if (allStats.bloodPressureStats.numOfBloodPressuresPreviousMonth === 0) {
+                    bloodPressureStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.bloodPressureStats.numOfBloodPressuresPreviousMonth - allStats.bloodPressureStats.numOfBloodPressuresThisMonth) / allStats.bloodPressureStats.numOfBloodPressuresPreviousMonth) * 100;
+                    bloodPressureStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    bloodPressureStatPercentage += '%';
+                }
+
+                if (allStats.bloodPressureStats.numOfBloodPressuresThisMonth < allStats.bloodPressureStats.numOfBloodPressuresPreviousMonth) {
+                    $('#bloodPressurePercentageSpan').text(bloodPressureStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#bloodPressurePercentageSpan').text(bloodPressureStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#bloodPressureStatPercentage').text(allStats.bloodPressureStats.numOfTotalBloodPressures);
+
+
+                $('#numOfDiabetes').text(allStats.diabetesStats.numOfTotalDiabetes);
+                let diabetesStatPercentage;
+                if (allStats.diabetesStats.numOfDiabetesPreviousMonth === 0) {
+                    diabetesStatPercentage = '∞%';
+                } else {
+                    let unroundedValue = (Math.abs(allStats.diabetesStats.numOfDiabetesPreviousMonth - allStats.diabetesStats.numOfDiabetesThisMonth) / allStats.diabetesStats.numOfDiabetesPreviousMonth) * 100;
+                    diabetesStatPercentage = Math.round(unroundedValue * 100) / 100;
+                    diabetesStatPercentage += '%';
+                }
+
+                if (allStats.diabetesStats.numOfDiabetesThisMonth < allStats.diabetesStats.numOfDiabetesPreviousMonth) {
+                    $('#diabetesPercentageSpan').text(diabetesStatPercentage).addClass('text-danger mr-2').prepend("<i class='fa fa-arrow-down'></i>");
+                } else {
+                    $('#diabetesPercentageSpan').text(diabetesStatPercentage).addClass('text-success mr-2').prepend("<i class='fa fa-arrow-up'></i>");
+
+                }
+                $('#diabetesStatPercentage').text(allStats.diabetesStats.numOfTotalDiabetes);
             });
 
         });
     </script>
 
-<!--    OVAJ KOMENTIRANI DIO MOZES ISKORISTIT ZA TEST-->
-<!--    <script>-->
-<!--        $('document').ready(function () {-->
-<!--            const allStats = [-->
-<!--                {-->
-<!--                    "allergiesStats": {-->
-<!--                        "numOfAllergiesPreviousMonth": 0,-->
-<!--                        "numOfAllergiesThisMonth": 967,-->
-<!--                        "numOfTotalAllergies": 1000-->
-<!--                    },-->
-<!--                    "appointmentStats": {-->
-<!--                        "numOfAppointmentsPreviousMonth": 5,-->
-<!--                        "numOfAppointmentsThisMonth": 3,-->
-<!--                        "numOfTotalAppointments": 8-->
-<!--                    },-->
-<!--                    "bloodPressureStats": {-->
-<!--                        "numOfBloodPressuresPreviousMonth": 0,-->
-<!--                        "numOfBloodPressuresThisMonth": 1,-->
-<!--                        "numOfTotalBloodPressures": 1-->
-<!--                    },-->
-<!--                    "doctorsStats": {-->
-<!--                        "numOfDoctorsPreviousMonth": 0,-->
-<!--                        "numOfDoctorsThisMonth": 0,-->
-<!--                        "numOfTotalDoctors": 2-->
-<!--                    },-->
-<!--                    "patientStats": {-->
-<!--                        "numOfPatientsPreviousMonth": 0,-->
-<!--                        "numOfPatientsThisMonth": 8,-->
-<!--                        "numOfTotalPatients": 8-->
-<!--                    },-->
-<!--                    "labTestsStats": {-->
-<!--                        "numOfLabTestsPreviousMonth": 0,-->
-<!--                        "numOfLabTestsThisMonth": 1,-->
-<!--                        "numOfTotalLabTests": 1-->
-<!--                    },-->
-<!--                    "vaccineStats": {-->
-<!--                        "numOfVaccinesPreviousMonth": 0,-->
-<!--                        "numOfVaccinesThisMonth": 1,-->
-<!--                        "numOfTotalVaccines": 1-->
-<!--                    },-->
-<!--                    "diabetesStats": {-->
-<!--                        "numOfDiabetesPreviousMonth": 0,-->
-<!--                        "numOfDiabetesThisMonth": 1,-->
-<!--                        "numOfTotalDiabetes": 1-->
-<!--                    }-->
-<!--                }]-->
-<!--        });-->
-<!--    </script>-->
+
 </head>
 <body>
 
 <div layout:fragment="content" class="container">
-
     <div class="header-body">
         <div class="row d-flex aligns-items-center justify-content-center mt-5">
-            <div class="col-md-3">
-                <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                        <div class="row ">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">DOKTOR</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="fs-1">
-                                    <i class="fa-solid fa-user-doctor"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card card-stats mb-4 mb-xl-0">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">PACIJENT</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    DOKTORI
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfDoctors"></span>
                             </div>
                             <div class="col-auto">
                                 <div class="fs-1">
-                                    <i class="fa-solid fa-hospital-user"></i>
+                                    <i class="fa-solid fa-user-doctor" style="color: #3b7fda"></i>
                                 </div>
                             </div>
                         </div>
                         <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
+                            <i></i>
+                            <span id="doctorPercentageSpan"></span>
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    PACIJENTI
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfPatients"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-hospital-user" style="color: #88eac7"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <i></i>
+                            <span id="patientPercentageSpan"></span>
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card card-stats mb-4 mb-xl-0">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">LAB-NALAZI</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    SASTANCI
+                                </h5>
+                                <span
+                                        class="h2 font-weight-bold mb-2"
+                                        id="numOfAppointments"
+                                ></span>
                             </div>
                             <div class="col-auto">
                                 <div class="fs-1">
-                                    <i class="fa-solid fa-vial"></i>
+                                    <i
+                                            class="fa-solid fa-calendar-check" style="color: #e84747"></i>
                                 </div>
                             </div>
                         </div>
                         <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="header-body">
-        <div class="row d-flex aligns-items-center justify-content-center mt-5">
-            <div class="col-md-3">
-                <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                        <div class="row ">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">DOKTOR</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="fs-1">
-                                    <i class="fa-solid fa-user-doctor"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">PACIJENT</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="fs-1">
-                                    <i class="fa-solid fa-hospital-user"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2" id="appointmentStatPercentage"><i
-                                    class="fa fa-arrow-up"></i></span>
-                            <span class="text-nowrap">Since last month</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">SASTANAK</h5>
-                                <span class="h2 font-weight-bold mb-2" id="numOfAppointments"></span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="fs-1">
-                                    <i class="fa-solid fa-vial"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <i></i>
                             <span id="appointmentPercentageSpan"></span>
-                            <span class="text-nowrap">Since last month</span>
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
                         </p>
                     </div>
                 </div>
@@ -235,44 +260,138 @@
 
     <div class="header-body">
         <div class="row d-flex aligns-items-center justify-content-center mt-5">
-            <div class="col-md-3">
-                <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                        <div class="row ">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">DOKTOR</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="fs-1">
-                                    <i class="fa-solid fa-user-doctor"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card card-stats mb-4 mb-xl-0">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-3">PACIJENT</h5>
-                                <span class="h2 font-weight-bold mb-2">350,897</span>
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    LAB-NALAZI
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfLabTests"></span>
                             </div>
                             <div class="col-auto">
                                 <div class="fs-1">
-                                    <i class="fa-solid fa-hospital-user"></i>
+                                    <i class="fa-solid fa-vial" style="color: #702525"></i>
                                 </div>
                             </div>
                         </div>
                         <p class="mt-5 mb-0 text-muted text-sm">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                            <span class="text-nowrap">Since last month</span>
+                            <i></i>
+                            <span id="labTestPercentageSpan"></span>
+
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    CJEPIVA
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfVaccines"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-virus" style="color: #09f30d"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <i></i>
+                            <span id="vaccinePercentageSpan"></span>
+
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    ALERGIJE
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfAllergies"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-hand-dots" style="color: #aed7de"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <i></i>
+                            <span id="allergiePercentageSpan"></span>
+
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-body">
+        <div class="row d-flex aligns-items-center justify-content-center mt-5">
+            <div class="col-md-4">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    KRVNI TLAK
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfBloodPressures"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa fa-heartbeat" style="color: #d5082b"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <i></i>
+                            <span id="bloodPressurePercentageSpan"></span>
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-3">
+                                    GLUKOZA
+                                </h5>
+                                <span class="h2 font-weight-bold mb-2"
+                                      id="numOfDiabetes"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fs-1">
+                                    <i class="fa-solid fa-syringe" style="color: #17bd82"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-5 mb-0 text-muted text-sm">
+                            <i></i>
+                            <span id="diabetesPercentageSpan"></span>
+
+                            <span class="text-nowrap">Od prošlog mjeseca</span>
                         </p>
                     </div>
                 </div>

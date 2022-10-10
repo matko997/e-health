@@ -43,22 +43,22 @@
            <a th:href="@{/naslovnica}" class="list-group-item-action" style="text-decoration: none">E Zdravlje</a>
         </div>
         <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5" th:href="@{/sastanci}"><span><i
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5" th:href="@{/sastanci}"><span><i
                     class="fa-solid fa-calendar-check" style="color: #e84747"></i></span> Sastanci</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5" th:href="@{/doktori}"><span><i
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5" th:href="@{/doktori}"><span><i
                     class="fa-solid fa-user-doctor" style="color: #3b7fda"></i></span> Doktori</a>
             <a sec:authorize="hasAnyAuthority('DOCTOR','ADMIN')"
-               class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5" th:href="@{/pacijenti}"><span><i
+               class="list-group-item list-group-item-action list-group-item-light p-3 fs-5" th:href="@{/pacijenti}"><span><i
                     class="fa-solid fa-hospital-user" style="color: #88eac7"></i></span> Pacijenti</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5"
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5"
                th:href="@{/lab-nalazi}"><span><i class="fa-solid fa-vial" style="color: #702525"></i></span> Labaratorijski nalazi</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5" th:href="@{/cjepiva}"><span><i
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5" th:href="@{/cjepiva}"><span><i
                     class="fa-solid fa-virus" style="color: #09f30d"></i></span> Cjepiva</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5" th:href="@{/alergije}"><span><i
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5" th:href="@{/alergije}"><span><i
                     class="fa-solid fa-hand-dots" style="color: #aed7de"></i></span> Alergije</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5"
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5"
                th:href="@{/krvni-tlakovi}"><span><i class="fa fa-heartbeat" style="color: #d5082b"></i></span> Krvni tlak</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3 fst-italic fs-5"
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 fs-5"
                th:href="@{/dijabetesi}"><span><i class="fa-solid fa-syringe" style="color: #17bd82"></i></span> Glukoza</a>
         </div>
     </div>

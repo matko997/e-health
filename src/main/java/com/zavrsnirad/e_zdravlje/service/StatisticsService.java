@@ -5,10 +5,11 @@ import com.zavrsnirad.e_zdravlje.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 
 @Service
 public class StatisticsService {
+    public static final String DOCTOR_ROLE = "DOCTOR";
+    public static final String PATIENT_ROLE = "PATIENT";
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
     private final AllergiesRepository allergiesRepository;
@@ -16,6 +17,11 @@ public class StatisticsService {
     private final DiabetesRepository diabetesRepository;
     private final LabTestRepository labTestRepository;
     private final BloodPressureRepository bloodPressureRepository;
+    private final LocalDateTime currentDay = LocalDateTime.now();
+    private final LocalDateTime startDatePreviousMonth = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0).withSecond(0).withNano(0);
+    private final LocalDateTime endDatePreviousMonth = currentDay.withDayOfMonth(currentDay.getMonth().maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+    private final LocalDateTime startDateThisMonth = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0).withSecond(0).withNano(0);
+    private final LocalDateTime endDateThisMonth = currentDay.withDayOfMonth(currentDay.getMonth().maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 
     public StatisticsService(AppointmentRepository appointmentRepository, UserRepository userRepository,
                              AllergiesRepository allergiesRepository, VaccineRepository vaccineRepository,
@@ -35,19 +41,11 @@ public class StatisticsService {
     }
 
     public long getCountOfAppointmentsInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return appointmentRepository.getCountOfAppointmentsBetween(startDate, endDate);
+        return appointmentRepository.getCountOfAppointmentsBetween(startDatePreviousMonth, endDatePreviousMonth);
     }
 
     public long getCountOfAppointmentsThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return appointmentRepository.getCountOfAppointmentsBetween(startDate, endDate);
+        return appointmentRepository.getCountOfAppointmentsBetween(startDateThisMonth, endDateThisMonth);
     }
 
     public long getCountOfVaccines() {
@@ -55,19 +53,11 @@ public class StatisticsService {
     }
 
     public long getCountOfVaccinesInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return vaccineRepository.getCountOfVaccinesBetween(startDate, endDate);
+        return vaccineRepository.getCountOfVaccinesBetween(startDatePreviousMonth, endDatePreviousMonth);
     }
 
     public long getCountOfVaccinesThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return vaccineRepository.getCountOfVaccinesBetween(startDate, endDate);
+        return vaccineRepository.getCountOfVaccinesBetween(startDateThisMonth, endDateThisMonth);
     }
 
     // DIABETES
@@ -76,70 +66,38 @@ public class StatisticsService {
     }
 
     public long getCountOfDiabetesInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return diabetesRepository.getCountOfDiabetesBetween(startDate, endDate);
+        return diabetesRepository.getCountOfDiabetesBetween(startDatePreviousMonth, endDatePreviousMonth);
     }
 
     public long getCountOfDiabetesThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return diabetesRepository.getCountOfDiabetesBetween(startDate, endDate);
+        return diabetesRepository.getCountOfDiabetesBetween(startDateThisMonth, endDateThisMonth);
     }
 
     //DOCTORS
 
     public long getCountOfDoctors() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return userRepository.getCountOfDoctors("DOCTOR");
+        return userRepository.getCountOfDoctors(DOCTOR_ROLE);
     }
 
     public long getCountOfDoctorsInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return userRepository.getCountOfUserByRoleBetween(startDate, endDate, "DOCTOR");
+        return userRepository.getCountOfUserByRoleBetween(startDatePreviousMonth, endDatePreviousMonth, DOCTOR_ROLE);
     }
 
     public long getCountOfDoctorsThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return userRepository.getCountOfUserByRoleBetween(startDate, endDate, "DOCTORS");
+        return userRepository.getCountOfUserByRoleBetween(startDateThisMonth, endDateThisMonth, DOCTOR_ROLE);
     }
 
     //PATIENTS
     public long getCountOfPatients() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return userRepository.getCountOfDoctors("PATIENT");
+        return userRepository.getCountOfDoctors(PATIENT_ROLE);
     }
 
     public long getCountOfPatientsInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return userRepository.getCountOfUserByRoleBetween(startDate, endDate, "PATIENT");
+        return userRepository.getCountOfUserByRoleBetween(startDatePreviousMonth, endDatePreviousMonth, PATIENT_ROLE);
     }
 
     public long getCountOfPatientsThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return userRepository.getCountOfUserByRoleBetween(startDate, endDate, "PATIENT");
+        return userRepository.getCountOfUserByRoleBetween(startDateThisMonth, endDateThisMonth, PATIENT_ROLE);
     }
 
     //LAB TESTS
@@ -149,19 +107,11 @@ public class StatisticsService {
     }
 
     public long getCountOfLabTestsInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return labTestRepository.getCountOfLabTestsBetween(startDate, endDate);
+        return labTestRepository.getCountOfLabTestsBetween(startDatePreviousMonth, endDatePreviousMonth);
     }
 
     public long getCountOfLabTestsThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return labTestRepository.getCountOfLabTestsBetween(startDate, endDate);
+        return labTestRepository.getCountOfLabTestsBetween(startDateThisMonth, endDateThisMonth);
     }
 
     //ALLERGIES
@@ -171,19 +121,11 @@ public class StatisticsService {
     }
 
     public long getCountOfAllergiesInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return allergiesRepository.getCountOfAllergiesBetween(startDate, endDate);
+        return allergiesRepository.getCountOfAllergiesBetween(startDatePreviousMonth, endDatePreviousMonth);
     }
 
     public long getCountAllergiesThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return allergiesRepository.getCountOfAllergiesBetween(startDate, endDate);
+        return allergiesRepository.getCountOfAllergiesBetween(startDateThisMonth, endDateThisMonth);
     }
 
     //BLOOD PRESSURE
@@ -193,24 +135,13 @@ public class StatisticsService {
     }
 
     public long getCountOfBloodPressuresInLastMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue() - 1).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return bloodPressureRepository.getCountBloodPressureBetween(startDate, endDate);
+        return bloodPressureRepository.getCountBloodPressureBetween(startDatePreviousMonth, endDatePreviousMonth);
     }
 
     public long getCountBloodPressuresThisMonth() {
-        LocalDateTime currentDay = getLocalDateTime();
-        Month currentMonth = currentDay.getMonth();
-        LocalDateTime startDate = currentDay.withDayOfMonth(1).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(0).withMinute(0);
-        LocalDateTime endDate = currentDay.withDayOfMonth(currentMonth.maxLength()).withMonth(currentDay.getMonthValue()).withYear(currentDay.getYear()).withHour(23).withMinute(59);
-        return bloodPressureRepository.getCountBloodPressureBetween(startDate, endDate);
+        return bloodPressureRepository.getCountBloodPressureBetween(startDateThisMonth, endDateThisMonth);
     }
 
-    private static LocalDateTime getLocalDateTime() {
-        return LocalDateTime.now();
-    }
 
     public AllStats getAllStats() {
         AllStats allStats = new AllStats();

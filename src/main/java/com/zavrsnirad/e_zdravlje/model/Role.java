@@ -13,11 +13,13 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "name")
-    private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
-    private Set<User> users;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+
+  @Column(name = "name")
+  private String name;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
+  private Set<User> users;
 }

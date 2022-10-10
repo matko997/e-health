@@ -21,52 +21,55 @@ import java.util.Optional;
 
 @Controller
 public class UserController {
-    private final UserService userService;
+  private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @GetMapping("/racun")
+  public String showUserProfile(Model model) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    UserDetails userDetails = (UserDetails) auth.getPrincipal();
+    String email = userDetails.getUsername();
+
+    Optional<User> optionalUser = userService.findByEmail(email);
+    User user = optionalUser.get();
+
+    UserProfileDto profileDto = userService.buildProfileDto(user);
+
+    model.addAttribute("user", profileDto);
+
+    return "update-user-profile";
+  }
+
+  @PostMapping(value = "/racun")
+  public String updateUserProfile(
+      @Valid @ModelAttribute("user") UserProfileDto userProfileDto,
+      BindingResult bindingResult,
+      RedirectAttributes redirectAttributes) {
+
+    if (Objects.nonNull(userProfileDto.getJmbg())
+        && !userProfileDto.getJmbg().equals("")
+        && Validator.isInvalidJmbg(userProfileDto.getJmbg())) {
+      bindingResult.rejectValue("jmbg", "jmbg.invalid");
     }
 
-    @GetMapping("/racun")
-    public String showUserProfile(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        String email = userDetails.getUsername();
-
-        Optional<User> optionalUser = userService.findByEmail(email);
-        User user = optionalUser.get();
-
-        UserProfileDto profileDto = userService.buildProfileDto(user);
-
-
-        model.addAttribute("user", profileDto);
-
-        return "update-user-profile";
+    if (bindingResult.hasErrors()) {
+      redirectAttributes.addFlashAttribute(
+          "error", "Došlo je do pogreške, molimo vas da pokušate ponovno");
+      return "update-user-profile";
     }
 
-    @PostMapping(value = "/racun")
-    public String updateUserProfile(@Valid @ModelAttribute("user") UserProfileDto userProfileDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    UserDetails userDetails = (UserDetails) auth.getPrincipal();
+    String email = userDetails.getUsername();
 
-        if (Objects.nonNull(userProfileDto.getJmbg()) && !userProfileDto.getJmbg().equals("") && Validator.isInvalidJmbg(userProfileDto.getJmbg())) {
-            bindingResult.rejectValue("jmbg",
-                    "jmbg.invalid");
-        }
+    Optional<User> user = userService.findByEmail(email);
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Došlo je do pogreške, molimo vas da pokušate ponovno");
-            return "update-user-profile";
-        }
+    userService.saveUserProfile(user.get(), userProfileDto);
+    redirectAttributes.addFlashAttribute("success", "Račun ažuriran uspješno");
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        String email = userDetails.getUsername();
-
-        Optional<User> user = userService.findByEmail(email);
-
-        userService.saveUserProfile(user.get(), userProfileDto);
-        redirectAttributes.addFlashAttribute("success", "Račun ažuriran uspješno");
-
-
-        return "redirect:/racun";
-    }
+    return "redirect:/racun";
+  }
 }

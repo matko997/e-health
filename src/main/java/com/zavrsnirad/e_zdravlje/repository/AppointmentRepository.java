@@ -11,16 +11,21 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    Page<Appointment> findAllByPatient(User patient, Pageable pageable);
+  Page<Appointment> findAllByPatient(User patient, Pageable pageable);
 
-    @Query("SELECT a FROM Appointment a JOIN a.doctor JOIN a.patient WHERE a.patient.firstName LIKE %:keyword% OR a.patient.lastName " +
-            "LIKE %:keyword% OR a.doctor.firstName LIKE %:keyword% OR a.doctor.lastName LIKE %:keyword% ")
-    Page<Appointment> findAppointmentPaginatedAndFilterable(Pageable pageable, @Param("keyword") String keyword);
+  @Query(
+      "SELECT a FROM Appointment a JOIN a.doctor JOIN a.patient WHERE a.patient.firstName LIKE %:keyword% OR a.patient.lastName "
+          + "LIKE %:keyword% OR a.doctor.firstName LIKE %:keyword% OR a.doctor.lastName LIKE %:keyword% ")
+  Page<Appointment> findAppointmentPaginatedAndFilterable(
+      Pageable pageable, @Param("keyword") String keyword);
 
-    @Query("SELECT a FROM Appointment a JOIN a.doctor JOIN a.patient WHERE a.patient=:patient AND  (a.doctor.firstName " +
-            "LIKE %:keyword% OR a.patient.firstName LIKE %:keyword% OR a.createdAt= :keyword) ")
-    Page<Appointment> findAllByPatientFilterable(@Param("patient") User user, Pageable pageable, @Param("keyword") String keyword);
+  @Query(
+      "SELECT a FROM Appointment a JOIN a.doctor JOIN a.patient WHERE a.patient=:patient AND  (a.doctor.firstName "
+          + "LIKE %:keyword% OR a.patient.firstName LIKE %:keyword% OR a.createdAt= :keyword) ")
+  Page<Appointment> findAllByPatientFilterable(
+      @Param("patient") User user, Pageable pageable, @Param("keyword") String keyword);
 
-    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.createdAt BETWEEN :startDate AND :endDate")
-    long getCountOfAppointmentsBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+  @Query("SELECT COUNT(a) FROM Appointment a WHERE a.createdAt BETWEEN :startDate AND :endDate")
+  long getCountOfAppointmentsBetween(
+      @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiabetesDto {
-    private double value;
-    private long patientId;
+  private double value;
+  private long patientId;
 }

@@ -1,4 +1,5 @@
 package com.zavrsnirad.e_zdravlje.dto.stats;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class LabTestsStats {
-    private long numOfLabTestsPreviousMonth;
-    private long numOfLabTestsThisMonth;
-    private long numOfTotalLabTests;
+  private long numOfLabTestsPreviousMonth;
+  private long numOfLabTestsThisMonth;
+  private long numOfTotalLabTests;
 }

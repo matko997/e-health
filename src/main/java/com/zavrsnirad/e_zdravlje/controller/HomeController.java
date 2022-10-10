@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public HomeController(UserService userService) {
-        this.userService = userService;
-    }
+  public HomeController(UserService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping("/index")
-    public String showHomePage() {
-        return "index";
-    }
+  @GetMapping("/index")
+  public String showHomePage() {
+    return "index";
+  }
 
-    @GetMapping("/naslovnica")
-    public String showDashboard() {
-        return "welcome-index";
-    }
+  @GetMapping("/naslovnica")
+  public String showDashboard() {
+    return "welcome-index";
+  }
 
-    @GetMapping("/registracija")
-    public String showSignupForm(Model model) {
-        model.addAttribute("userRegisterDto", new UserRegisterDto());
-        return "/register";
-    }
+  @GetMapping("/registracija")
+  public String showSignupForm(Model model) {
+    model.addAttribute("userRegisterDto", new UserRegisterDto());
+    return "/register";
+  }
 }

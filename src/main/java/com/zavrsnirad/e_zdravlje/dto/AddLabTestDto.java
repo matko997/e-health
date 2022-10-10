@@ -10,12 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddLabTestDto {
-    private long patientId;
-    private Double urea;
-    private Double glucose;
-    private Integer creatinine;
-    private Double cholesterol;
-    private Double triglyceride;
-    private Integer hemoglobin;
-    private Integer ALP;
+  private long patientId;
+  private Double urea;
+  private Double glucose;
+  private Integer creatinine;
+  private Double cholesterol;
+  private Double triglyceride;
+  private Integer hemoglobin;
+  private Integer ALP;
 }

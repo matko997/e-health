@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddVaccineDto {
-    private String name;
-    private long patientId;
+  private String name;
+  private long patientId;
 }

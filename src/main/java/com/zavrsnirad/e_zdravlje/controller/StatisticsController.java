@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class StatisticsController {
-    private final StatisticsService statisticsService;
+  private final StatisticsService statisticsService;
 
-    public StatisticsController(StatisticsService statisticsService) {
-        this.statisticsService = statisticsService;
-    }
+  public StatisticsController(StatisticsService statisticsService) {
+    this.statisticsService = statisticsService;
+  }
 
-    @RequestMapping(value = "/statistika")
-    @ResponseBody
-    public AllStats getAllStats() {
-        return statisticsService.getAllStats();
-    }
+  @RequestMapping(value = "/statistika")
+  @ResponseBody
+  public AllStats getAllStats() {
+    return statisticsService.getAllStats();
+  }
 }

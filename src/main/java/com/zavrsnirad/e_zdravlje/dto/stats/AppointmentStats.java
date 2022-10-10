@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class AppointmentStats {
-    private long numOfAppointmentsPreviousMonth;
-    private long numOfAppointmentsThisMonth;
-    private long numOfTotalAppointments;
+  private long numOfAppointmentsPreviousMonth;
+  private long numOfAppointmentsThisMonth;
+  private long numOfTotalAppointments;
 }

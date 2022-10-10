@@ -15,42 +15,37 @@ import java.util.Optional;
 @Controller
 public class AuthController {
 
-    private final UserService userService;
+  private final UserService userService;
 
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+  @PostMapping("/registracija")
+  public String registerUser(@Valid UserRegisterDto userRegisterDto, BindingResult bindingResult) {
+
+    Optional<User> existingUser = userService.findByEmail(userRegisterDto.getEmail());
+
+    if (Validator.isInUse(existingUser)) {
+      bindingResult.rejectValue("email", "email.taken");
+    }
+    if (Validator.isInvalidEmail(userRegisterDto.getEmail())) {
+      bindingResult.rejectValue("email", "email.invalid");
+    }
+    if (!userRegisterDto.getPassword().equals(userRegisterDto.getRepeatPassword())) {
+      bindingResult.rejectValue("repeatPassword", "password.mismatch");
     }
 
-    @PostMapping("/registracija")
-    public String registerUser(@Valid UserRegisterDto userRegisterDto, BindingResult bindingResult) {
-
-        Optional<User> existingUser = userService.findByEmail(userRegisterDto.getEmail());
-
-        if (Validator.isInUse(existingUser)) {
-            bindingResult.rejectValue("email",
-                    "email.taken");
-        }
-        if (Validator.isInvalidEmail(userRegisterDto.getEmail())) {
-            bindingResult.rejectValue("email",
-                    "email.invalid");
-        }
-        if (!userRegisterDto.getPassword().equals(userRegisterDto.getRepeatPassword())) {
-            bindingResult.rejectValue("repeatPassword",
-                    "password.mismatch");
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "register";
-        }
-
-        userService.registerNewPatient(userRegisterDto);
-        return "redirect:/naslovnica";
+    if (bindingResult.hasErrors()) {
+      return "register";
     }
 
-    @GetMapping("/prijava")
-    public String loginUser() {
-        return "index";
-    }
+    userService.registerNewPatient(userRegisterDto);
+    return "redirect:/naslovnica";
+  }
 
+  @GetMapping("/prijava")
+  public String loginUser() {
+    return "index";
+  }
 }

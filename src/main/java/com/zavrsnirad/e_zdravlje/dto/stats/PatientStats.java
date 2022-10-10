@@ -1,4 +1,5 @@
 package com.zavrsnirad.e_zdravlje.dto.stats;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class PatientStats {
-    private long numOfPatientsPreviousMonth;
-    private long numOfPatientsThisMonth;
-    private long numOfTotalPatients;
+  private long numOfPatientsPreviousMonth;
+  private long numOfPatientsThisMonth;
+  private long numOfTotalPatients;
 }

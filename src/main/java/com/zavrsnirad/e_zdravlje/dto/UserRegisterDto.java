@@ -15,21 +15,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterDto {
-    @NotEmpty(message = "Molimo vas da unesete valjano ime")
-    private String firstName;
+  @NotEmpty(message = "Molimo vas da unesete valjano ime")
+  private String firstName;
 
-    @NotEmpty(message = "Molimo vas da unesete valjano prezime")
-    private String lastName;
+  @NotEmpty(message = "Molimo vas da unesete valjano prezime")
+  private String lastName;
 
-    private String email;
+  private String email;
 
-    private String gender;
+  private String gender;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDay;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate birthDay;
 
-    @Size(message = "Molimo vas da uneste lozinku s minimalno 8 znakova", min = 8)
-    private String password;
+  @Size(message = "Molimo vas da uneste lozinku s minimalno 8 znakova", min = 8)
+  private String password;
 
-    private String repeatPassword;
+  private String repeatPassword;
 }

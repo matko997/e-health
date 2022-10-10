@@ -14,46 +14,52 @@ import java.util.Optional;
 @Controller
 public class PatientController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public PatientController(UserService userService) {
-        this.userService = userService;
+  public PatientController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @GetMapping("/pacijenti")
+  public String findPatientsPaginated(
+      @RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
+      @RequestParam(value = "velicina", required = false, defaultValue = "10") int size,
+      @RequestParam(value = "filter", required = false) String keyword,
+      Model model) {
+    if (Objects.isNull(keyword)) {
+      model.addAttribute("patients", userService.findPatientsPaginated(pageNumber, size));
+      return "patient-index";
     }
+    model.addAttribute(
+        "patients", userService.findPatientsPaginatedAndFiltered(pageNumber, size, keyword));
+    return "patient-index";
+  }
 
-    @GetMapping("/pacijenti")
-    public String findPatientsPaginated(@RequestParam(value = "stranica", required = false, defaultValue = "1") int pageNumber,
-                                        @RequestParam(value = "velicina", required = false, defaultValue = "10") int size,
-                                        @RequestParam(value = "filter", required = false) String keyword, Model model) {
-        if (Objects.isNull(keyword)) {
-            model.addAttribute("patients", userService.findPatientsPaginated(pageNumber, size));
-            return "patient-index";
-        }
-        model.addAttribute("patients", userService.findPatientsPaginatedAndFiltered(pageNumber, size, keyword));
-        return "patient-index";
+  @RequestMapping(
+      value = "/pacijenti/obrisi",
+      method = {RequestMethod.GET, RequestMethod.DELETE})
+  public String deletePatient(long id, RedirectAttributes redirectAttributes) {
+    try {
+      userService.deleteById(id);
+      redirectAttributes.addFlashAttribute("success", "Pacijent uspješno obrisan.");
+      return "redirect:/pacijenti";
+
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute(
+          "error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
+      return "redirect:/pacijenti";
     }
+  }
 
-    @RequestMapping(value = "/pacijenti/obrisi", method = {RequestMethod.GET, RequestMethod.DELETE})
-    public String deletePatient(long id, RedirectAttributes redirectAttributes) {
-        try {
-            userService.deleteById(id);
-            redirectAttributes.addFlashAttribute("success", "Pacijent uspješno obrisan.");
-            return "redirect:/pacijenti";
+  @RequestMapping(value = "/pacijent")
+  @ResponseBody
+  public Optional<User> findOneDoctor(long id) {
+    return userService.findById(id);
+  }
 
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Ups, došlo je do pogreške, molimo vas da pokušate ponovno");
-            return "redirect:/pacijenti";
-        }
-    }
-
-    @RequestMapping(value = "/pacijent")
-    @ResponseBody
-    public Optional<User> findOneDoctor(long id) {
-        return userService.findById(id);
-    }
-
-    @RequestMapping(value = "/pacijenti/json")
-    @ResponseBody
-    public List<User> findAllPatients() {
-        return userService.findAllPatients();
-    }
+  @RequestMapping(value = "/pacijenti/json")
+  @ResponseBody
+  public List<User> findAllPatients() {
+    return userService.findAllPatients();
+  }
 }

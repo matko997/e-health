@@ -17,18 +17,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vaccine {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "name")
-    private String name;
-    @ManyToOne()
-    @JoinColumn(name = "doctor_id")
-    private User doctor;
-    @ManyToOne()
-    @JoinColumn(name = "patient_id")
-    private User patient;
-    @CreationTimestamp
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdAt;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+
+  @Column(name = "name")
+  private String name;
+
+  @ManyToOne()
+  @JoinColumn(name = "doctor_id")
+  private User doctor;
+
+  @ManyToOne()
+  @JoinColumn(name = "patient_id")
+  private User patient;
+
+  @CreationTimestamp
+  @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+  private LocalDateTime createdAt;
 }

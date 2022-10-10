@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AllStats {
-    private AllergiesStats allergiesStats;
-    private AppointmentStats appointmentStats;
-    private BloodPressureStats bloodPressureStats;
-    private DoctorsStats doctorsStats;
-    private PatientStats patientStats;
-    private LabTestsStats labTestsStats;
-    private VaccineStats vaccineStats;
-    private DiabetesStats diabetesStats;
+  private AllergiesStats allergiesStats;
+  private AppointmentStats appointmentStats;
+  private BloodPressureStats bloodPressureStats;
+  private DoctorsStats doctorsStats;
+  private PatientStats patientStats;
+  private LabTestsStats labTestsStats;
+  private VaccineStats vaccineStats;
+  private DiabetesStats diabetesStats;
 }

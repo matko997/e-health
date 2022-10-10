@@ -17,19 +17,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BloodPressure {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "upper_value")
-    private String upperValue;
-    @Column(name = "lower_value")
-    private String lowerValue;
-    @Column(name = "pulse")
-    private int pulse;
-    @ManyToOne()
-    @JoinColumn(name = "patient_id")
-    private User patient;
-    @CreationTimestamp
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdAt;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+
+  @Column(name = "upper_value")
+  private String upperValue;
+
+  @Column(name = "lower_value")
+  private String lowerValue;
+
+  @Column(name = "pulse")
+  private int pulse;
+
+  @ManyToOne()
+  @JoinColumn(name = "patient_id")
+  private User patient;
+
+  @CreationTimestamp
+  @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+  private LocalDateTime createdAt;
 }

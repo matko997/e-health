@@ -10,8 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BloodPressureDto {
-    private String lowerValue;
-    private String upperValue;
-    private int pulse;
-    private long patientId;
+  private String lowerValue;
+  private String upperValue;
+  private int pulse;
+  private long patientId;
 }

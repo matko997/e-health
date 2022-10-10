@@ -17,24 +17,24 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @ComponentScan
 public class ThymeleafConfig {
 
-    @Bean
-    public ISpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
-        SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
-        engine.addDialect(new Java8TimeDialect());
-        engine.addDialect(new SpringSecurityDialect());
-        engine.setTemplateResolver(templateResolver);
-        engine.setTemplateEngineMessageSource(messageSource());
-        return engine;
-    }
+  @Bean
+  public ISpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
+    SpringTemplateEngine engine = new SpringTemplateEngine();
+    engine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
+    engine.addDialect(new Java8TimeDialect());
+    engine.addDialect(new SpringSecurityDialect());
+    engine.setTemplateResolver(templateResolver);
+    engine.setTemplateEngineMessageSource(messageSource());
+    return engine;
+  }
 
-    @Bean
-    @Description("Spring Message Resolver")
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
-        messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setCacheSeconds(5);
-        return messageSource;
-    }
+  @Bean
+  @Description("Spring Message Resolver")
+  public ResourceBundleMessageSource messageSource() {
+    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    messageSource.setBasename("messages");
+    messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setCacheSeconds(5);
+    return messageSource;
+  }
 }

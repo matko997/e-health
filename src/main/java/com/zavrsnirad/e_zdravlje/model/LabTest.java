@@ -17,30 +17,40 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LabTest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(name = "urea")
-    private Double urea;
-    @Column(name = "glucose")
-    private Double glucose;
-    @Column(name = "creatinine")
-    private Integer creatinine;
-    @Column(name = "cholesterol")
-    private Double cholesterol;
-    @Column(name = "triglyceride")
-    private Double triglyceride;
-    @Column(name = "hemoglobin")
-    private Integer hemoglobin;
-    @Column(name = "ALP")
-    private Integer ALP;
-    @ManyToOne()
-    @JoinColumn(name = "doctor_id")
-    private User doctor;
-    @ManyToOne()
-    @JoinColumn(name = "patient_id")
-    private User patient;
-    @CreationTimestamp
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdAt;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+
+  @Column(name = "urea")
+  private Double urea;
+
+  @Column(name = "glucose")
+  private Double glucose;
+
+  @Column(name = "creatinine")
+  private Integer creatinine;
+
+  @Column(name = "cholesterol")
+  private Double cholesterol;
+
+  @Column(name = "triglyceride")
+  private Double triglyceride;
+
+  @Column(name = "hemoglobin")
+  private Integer hemoglobin;
+
+  @Column(name = "ALP")
+  private Integer ALP;
+
+  @ManyToOne()
+  @JoinColumn(name = "doctor_id")
+  private User doctor;
+
+  @ManyToOne()
+  @JoinColumn(name = "patient_id")
+  private User patient;
+
+  @CreationTimestamp
+  @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+  private LocalDateTime createdAt;
 }

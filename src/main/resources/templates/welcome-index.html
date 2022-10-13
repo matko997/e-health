@@ -173,7 +173,7 @@
 </head>
 <body>
 
-<div layout:fragment="content" class="container">
+<div sec:authorize="hasAnyAuthority('ADMIN','DOCTOR')" layout:fragment="content" class="container">
     <div class="header-body">
         <div class="row d-flex aligns-items-center justify-content-center mt-5">
             <div class="col-md-4">

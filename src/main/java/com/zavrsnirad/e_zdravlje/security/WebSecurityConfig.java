@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAuthority("ADMIN")
         .antMatchers(HttpMethod.DELETE, "/*/obrisi")
         .hasAnyAuthority("ADMIN", "DOCOTR")
-        .antMatchers(HttpMethod.DELETE, "/*/uredi")
+        .antMatchers(HttpMethod.PUT, "/*/uredi")
         .hasAnyAuthority("ADMIN", "DOCOTR")
         .antMatchers("/statistika")
         .hasAuthority("ADMIN")

@@ -14,7 +14,7 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
   Page<LabTest> findAllByPatient(User patient, Pageable pageable);
 
   @Query(
-      "SELECT lb FROM LabTest lb JOIN lb.doctor JOIN lb.patient WHERE lb.id =:keyword OR lb.doctor.firstName "
+      "SELECT lb FROM LabTest lb JOIN lb.doctor JOIN lb.patient WHERE  lb.doctor.firstName "
           + "LIKE %:keyword% OR lb.doctor.lastName LIKE %:keyword% OR lb.patient.firstName LIKE %:keyword% "
           + "OR lb.patient.lastName LIKE %:keyword% ")
   Page<LabTest> findLabTestPaginatedAndFilterable(
@@ -22,8 +22,9 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
 
   @Query(
       "SELECT lb FROM LabTest lb INNER JOIN lb.doctor INNER JOIN  lb.patient WHERE lb.patient=:patient AND"
-          + " (lb.id=:keyword OR lb.doctor.firstName "
-          + "LIKE %:keyword% OR lb.patient.firstName LIKE %:keyword% OR lb.createdAt= :keyword) ")
+          + " (lb.doctor.firstName  "
+          + "LIKE %:keyword% OR lb.doctor.lastName LIKE %:keyword% OR lb.patient.firstName "
+          + "LIKE %:keyword% OR lb.patient.lastName LIKE %:keyword% ) ")
   Page<LabTest> findAllByPatientFilterable(
       @Param("patient") User user, Pageable pageable, @Param("keyword") String keyword);
 

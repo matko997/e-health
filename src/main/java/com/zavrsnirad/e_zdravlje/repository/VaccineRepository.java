@@ -23,7 +23,8 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Long> {
 
   @Query(
       "SELECT v FROM Vaccine v INNER JOIN v.doctor INNER JOIN  v.patient WHERE v.patient=:patient AND  (v.doctor.firstName "
-          + "LIKE %:keyword% OR v.patient.firstName LIKE %:keyword% OR v.createdAt= :keyword) ")
+          + "LIKE %:keyword% OR v.patient.firstName LIKE %:keyword% OR v.doctor.firstName"
+          + " LIKE %:keyword% OR v.doctor.lastName LIKE %:keyword%) ")
   Page<Vaccine> findAllByPatientFilterable(
       @Param("patient") User user, Pageable pageable, @Param("keyword") String keyword);
 

@@ -30,6 +30,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAnyAuthority("ADMIN", "DOCOTR")
         .antMatchers(HttpMethod.PUT, "/*/uredi")
         .hasAnyAuthority("ADMIN", "DOCOTR")
+        .antMatchers(
+            HttpMethod.POST, "/cjepiva", "/alergije", "/krvni-tlakovi", "/dijabetesi", "lab-nalazi")
+        .hasAnyAuthority("ADMIN", "DOCOTR")
         .antMatchers("/statistika")
         .hasAuthority("ADMIN")
         .anyRequest()

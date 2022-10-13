@@ -3,6 +3,7 @@ package com.zavrsnirad.e_zdravlje.security;
 import com.zavrsnirad.e_zdravlje.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,6 +24,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         .antMatchers("/css/**", "/registracija", "/")
         .permitAll()
+        .antMatchers(HttpMethod.POST, "/doktori")
+        .hasAuthority("ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/*/obrisi")
+        .hasAnyAuthority("ADMIN", "DOCOTR")
+        .antMatchers(HttpMethod.DELETE, "/*/uredi")
+        .hasAnyAuthority("ADMIN", "DOCOTR")
+        .antMatchers("/statistika")
+        .hasAuthority("ADMIN")
         .anyRequest()
         .authenticated()
         .and()
@@ -35,10 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .logout()
         .logoutUrl("/odjava")
         .logoutSuccessUrl("/index")
-        .permitAll()
-        .and()
-        .csrf()
-        .disable();
+        .permitAll();
   }
 
   @Override
